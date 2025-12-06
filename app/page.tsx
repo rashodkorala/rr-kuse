@@ -1,65 +1,274 @@
-import Image from "next/image";
+'use client';
+
+import React, { useState } from 'react';
+import { motion } from 'framer-motion';
+import Link from 'next/link';
+import { createPageUrl } from '../utils';
+import { Beer, ArrowRight, Sparkles } from 'lucide-react';
+
+type ParticleData = {
+  x: string;
+  y: string;
+  duration: number;
+  delay: number;
+};
+
+// Generate particle data once outside component to avoid calling Math.random during render
+function generateParticleData(): ParticleData[] {
+  return Array.from({ length: 20 }, () => ({
+    x: Math.random() * 100 + '%',
+    y: Math.random() * 100 + '%',
+    duration: Math.random() * 3 + 2,
+    delay: Math.random() * 2,
+  }));
+}
 
 export default function Home() {
+  const [hoveredSide, setHoveredSide] = useState<'robroy' | 'konfusion' | null>(null);
+  const [particleData] = useState<ParticleData[]>(() => generateParticleData());
+
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
+    <div className="h-screen w-screen overflow-hidden relative bg-black">
+      {/* Rob Roy Side */}
+      <motion.div
+        className="absolute top-0 left-0 h-full cursor-pointer overflow-hidden"
+        initial={{ width: '50%' }}
+        animate={{
+          width: hoveredSide === 'robroy' ? '65%' : hoveredSide === 'konfusion' ? '35%' : '50%'
+        }}
+        transition={{ duration: 0.5, ease: [0.4, 0, 0.2, 1] }}
+        onMouseEnter={() => setHoveredSide('robroy')}
+        onMouseLeave={() => setHoveredSide(null)}
+      >
+        <Link href={createPageUrl('RobRoy')} className="block h-full w-full relative">
+          {/* Background Image */}
+          <div
+            className="absolute inset-0 bg-cover bg-center"
+            style={{
+              backgroundImage: 'url(https://images.unsplash.com/photo-1514933651103-005eec06c04b?w=1200)',
+            }}
+          />
+          {/* Overlay */}
+          <motion.div
+            className="absolute inset-0 bg-linear-to-br from-black/85 via-orange-900/80 to-black/90"
+            animate={{ opacity: hoveredSide === 'robroy' ? 0.75 : 0.85 }}
+          />
+
+          {/* Content */}
+          <div className="relative h-full flex flex-col justify-center items-center text-white p-8">
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2 }}
+              className="text-center"
             >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
+              <motion.div
+                animate={{ scale: hoveredSide === 'robroy' ? 1.1 : 1 }}
+                transition={{ duration: 0.3 }}
+              >
+                <Beer className="w-16 h-16 mx-auto mb-6 opacity-90" />
+              </motion.div>
+
+              <h1 className="font-bold text-5xl md:text-7xl tracking-tight mb-4">
+                ROB ROY
+              </h1>
+
+              <p className="text-lg md:text-xl font-light tracking-widest uppercase opacity-80 mb-2">
+                We Install & Service Hangovers
+              </p>
+
+              <p className="text-sm md:text-base tracking-widest opacity-70 mb-8">
+                EST. 1977
+              </p>
+
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: hoveredSide === 'robroy' ? 1 : 0 }}
+                className="flex items-center justify-center gap-2 text-white/90"
+              >
+                <span className="text-lg">Enter the Pub</span>
+                <ArrowRight className="w-5 h-5" />
+              </motion.div>
+            </motion.div>
+
+            {/* Decorative Elements */}
+            <div className="absolute bottom-8 left-8 right-8 flex justify-between items-end opacity-60">
+              <span className="text-sm tracking-widest">EST. LOCAL PUB</span>
+              <span className="text-sm tracking-widest">LIVE MUSIC</span>
+            </div>
+          </div>
+
+          {/* Animated border */}
+          <motion.div
+            className="absolute right-0 top-0 bottom-0 w-1 bg-gradient-to-b from-orange-400 via-white to-orange-400"
+            animate={{ opacity: hoveredSide === 'robroy' ? 1 : 0.3 }}
+          />
+        </Link>
+      </motion.div>
+
+      {/* Konfusion Side */}
+      <motion.div
+        className="absolute top-0 right-0 h-full cursor-pointer overflow-hidden"
+        initial={{ width: '50%' }}
+        animate={{
+          width: hoveredSide === 'konfusion' ? '65%' : hoveredSide === 'robroy' ? '35%' : '50%'
+        }}
+        transition={{ duration: 0.5, ease: [0.4, 0, 0.2, 1] }}
+        onMouseEnter={() => setHoveredSide('konfusion')}
+        onMouseLeave={() => setHoveredSide(null)}
+      >
+        <Link href={createPageUrl('Konfusion')} className="block h-full w-full relative">
+          {/* Background Image */}
+          <div
+            className="absolute inset-0 bg-cover bg-center"
+            style={{
+              backgroundImage: 'url(https://images.unsplash.com/photo-1571266028243-e4733b0f0bb0?w=1200)',
+            }}
+          />
+          {/* Overlay */}
+          <motion.div
+            className="absolute inset-0 bg-gradient-to-bl from-purple-900/90 via-violet-800/85 to-purple-950/95"
+            animate={{ opacity: hoveredSide === 'konfusion' ? 0.75 : 0.85 }}
+          />
+
+          {/* Animated particles */}
+          <div className="absolute inset-0 overflow-hidden">
+            {particleData.map((particle, i) => (
+              <motion.div
+                key={i}
+                className="absolute w-1 h-1 bg-purple-400 rounded-full"
+                initial={{
+                  x: particle.x,
+                  y: particle.y,
+                  opacity: 0
+                }}
+                animate={{
+                  y: [null, '-100%'],
+                  opacity: [0, 1, 0]
+                }}
+                transition={{
+                  duration: particle.duration,
+                  repeat: Infinity,
+                  delay: particle.delay
+                }}
+              />
+            ))}
+          </div>
+
+          {/* Content */}
+          <div className="relative h-full flex flex-col justify-center items-center text-white p-8">
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.3 }}
+              className="text-center"
             >
-              Learning
-            </a>{" "}
-            center.
-          </p>
+              <motion.div
+                animate={{
+                  scale: hoveredSide === 'konfusion' ? 1.1 : 1,
+                  rotate: hoveredSide === 'konfusion' ? [0, -10, 10, 0] : 0
+                }}
+                transition={{ duration: 0.5 }}
+              >
+                <Sparkles className="w-16 h-16 mx-auto mb-6 opacity-90" />
+              </motion.div>
+
+              <h1 className="font-bold text-5xl md:text-7xl tracking-tight mb-4">
+                KONFUSION
+              </h1>
+
+              <p className="text-lg md:text-xl font-light tracking-wide opacity-80 mb-2">
+                <span className="italic">(n.)</span> a lack of order
+              </p>
+              <p className="text-lg md:text-xl font-light tracking-wide opacity-80 mb-8">
+                or regular arrangement
+              </p>
+
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: hoveredSide === 'konfusion' ? 1 : 0 }}
+                className="flex items-center justify-center gap-2 text-white/90"
+              >
+                <span className="text-lg">Enter the Club</span>
+                <ArrowRight className="w-5 h-5" />
+              </motion.div>
+            </motion.div>
+
+            {/* Decorative Elements */}
+            <div className="absolute bottom-8 left-8 right-8 flex justify-between items-end opacity-60">
+              <span className="text-sm tracking-widest">NIGHTCLUB</span>
+              <span className="text-sm tracking-widest">DJ NIGHTS</span>
+            </div>
+          </div>
+
+          {/* Animated border */}
+          <motion.div
+            className="absolute left-0 top-0 bottom-0 w-1 bg-gradient-to-b from-purple-400 via-white to-purple-400"
+            animate={{ opacity: hoveredSide === 'konfusion' ? 1 : 0.3 }}
+          />
+        </Link>
+      </motion.div>
+
+      {/* Center Logo/Divider */}
+      <motion.div
+        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-20 pointer-events-none"
+        animate={{
+          scale: hoveredSide ? 0.8 : 1,
+          opacity: hoveredSide ? 0.5 : 1
+        }}
+      >
+        <div className="w-20 h-20 rounded-full bg-white/10 backdrop-blur-md border border-white/30 flex items-center justify-center">
+          <span className="text-white font-bold text-xs tracking-widest">VS</span>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
+      </motion.div>
+
+      {/* Mobile View */}
+      <div className="md:hidden absolute inset-0 flex flex-col">
+        <Link
+          href={createPageUrl('RobRoy')}
+          className="flex-1 relative overflow-hidden"
+        >
+          <div
+            className="absolute inset-0 bg-cover bg-center"
+            style={{
+              backgroundImage: 'url(https://images.unsplash.com/photo-1514933651103-005eec06c04b?w=800)',
+            }}
+          />
+          <div className="absolute inset-0 bg-gradient-to-br from-black/90 via-orange-900/85 to-black/95" />
+          <div className="relative h-full flex flex-col justify-center items-center text-white p-6">
+            <Beer className="w-12 h-12 mb-4" />
+            <h2 className="font-bold text-4xl mb-2">ROB ROY</h2>
+            <p className="text-sm tracking-widest opacity-80 mb-1">WE INSTALL & SERVICE HANGOVERS</p>
+            <p className="text-xs tracking-widest opacity-60">EST. 1977</p>
+            <div className="mt-4 flex items-center gap-2">
+              <span>Enter</span>
+              <ArrowRight className="w-4 h-4" />
+            </div>
+          </div>
+        </Link>
+
+        <Link
+          href={createPageUrl('Konfusion')}
+          className="flex-1 relative overflow-hidden"
+        >
+          <div
+            className="absolute inset-0 bg-cover bg-center"
+            style={{
+              backgroundImage: 'url(https://images.unsplash.com/photo-1571266028243-e4733b0f0bb0?w=800)',
+            }}
+          />
+          <div className="absolute inset-0 bg-gradient-to-bl from-purple-900/90 via-violet-800/85 to-purple-950/95" />
+          <div className="relative h-full flex flex-col justify-center items-center text-white p-6">
+            <Sparkles className="w-12 h-12 mb-4" />
+            <h2 className="font-bold text-4xl mb-2">KONFUSION</h2>
+            <p className="text-sm tracking-wide opacity-80 italic">(n.) a lack of order</p>
+            <div className="mt-4 flex items-center gap-2">
+              <span>Enter</span>
+              <ArrowRight className="w-4 h-4" />
+            </div>
+          </div>
+        </Link>
+      </div>
     </div>
   );
 }
