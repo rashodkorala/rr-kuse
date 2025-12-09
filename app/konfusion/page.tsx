@@ -167,7 +167,7 @@ export default function Konfusion() {
             <section className="relative h-screen flex items-center justify-center overflow-hidden">
                 <div
                     className="absolute inset-0 bg-cover bg-center"
-                    style={{ backgroundImage: 'url(https://images.unsplash.com/photo-1571266028243-e4733b0f0bb0?w=1600)' }}
+                    style={{ backgroundImage: 'url(https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=1600&q=80)' }}
                 />
                 <div className="absolute inset-0 bg-linear-to-b from-purple-950/80 via-purple-900/70 to-black/90" />
 
@@ -225,7 +225,7 @@ export default function Konfusion() {
                         <div className="flex flex-col sm:flex-row gap-4 justify-center">
                             <Button
                                 size="lg"
-                                className="bg-purple-600 hover:bg-purple-500 text-white px-8 shadow-lg shadow-purple-600/50"
+                                className="bg-purple-600 hover:bg-purple-700 text-white px-8 shadow-lg shadow-purple-600/50"
                                 onClick={() => document.getElementById('events')?.scrollIntoView({ behavior: 'smooth' })}
                             >
                                 <Calendar className="w-5 h-5 mr-2" />
@@ -234,7 +234,7 @@ export default function Konfusion() {
                             <Button
                                 size="lg"
                                 variant="outline"
-                                className="border-purple-400/50 text-white hover:bg-purple-900/50 px-8"
+                                className="bg-purple-950/90 hover:bg-purple-900/95 text-white border-purple-700/50 hover:border-purple-600/70 px-8"
                             >
                                 <Headphones className="w-5 h-5 mr-2" />
                                 DJ Lineup
@@ -318,17 +318,17 @@ export default function Konfusion() {
                         </p>
                     </motion.div>
 
-                    <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
                         <motion.div
                             initial={{ opacity: 0, y: 20 }}
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true }}
                             className="bg-linear-to-br from-purple-700 to-purple-900 p-6 rounded-2xl border border-purple-500/30"
                         >
-                            <div className="text-4xl mb-2">🍺</div>
-                            <h3 className="text-2xl font-bold mb-2">£2</h3>
-                            <p className="text-purple-200">Selected Beers</p>
-                            <p className="text-sm text-purple-300 mt-2">Before midnight (Fri)</p>
+                            <div className="text-4xl mb-2">💰</div>
+                            <h3 className="text-2xl font-bold mb-2">2 for £9.50</h3>
+                            <p className="text-purple-200">Selected Drinks</p>
+                            <p className="text-sm text-purple-300 mt-2">Friday & Saturday</p>
                         </motion.div>
 
                         <motion.div
@@ -338,10 +338,11 @@ export default function Konfusion() {
                             transition={{ delay: 0.1 }}
                             className="bg-linear-to-br from-purple-600 to-purple-800 p-6 rounded-2xl border border-purple-400/30"
                         >
-                            <div className="text-4xl mb-2">🍹</div>
-                            <h3 className="text-2xl font-bold mb-2">£5</h3>
-                            <p className="text-purple-200">House Cocktails</p>
-                            <p className="text-sm text-purple-300 mt-2">All night</p>
+                            <div className="text-4xl mb-2">💣</div>
+                            <h3 className="text-2xl font-bold mb-2">3 for £10</h3>
+                            <p className="text-purple-200">Cherrybombs, Jagerbombs</p>
+                            <p className="text-purple-200">& Jolly Ranchers</p>
+                            <p className="text-sm text-purple-300 mt-2">All Week</p>
                         </motion.div>
 
                         <motion.div
@@ -349,20 +350,7 @@ export default function Konfusion() {
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true }}
                             transition={{ delay: 0.2 }}
-                            className="bg-linear-to-br from-purple-700 to-purple-900 p-6 rounded-2xl border border-purple-500/30"
-                        >
-                            <div className="text-4xl mb-2">🥃</div>
-                            <h3 className="text-2xl font-bold mb-2">£3</h3>
-                            <p className="text-purple-200">Shots</p>
-                            <p className="text-sm text-purple-300 mt-2">Jaeger, Sambuca & more</p>
-                        </motion.div>
-
-                        <motion.div
-                            initial={{ opacity: 0, y: 20 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            viewport={{ once: true }}
-                            transition={{ delay: 0.3 }}
-                            className="bg-linear-to-br from-purple-600 to-purple-800 p-6 rounded-2xl border-2 border-purple-400/50"
+                            className="bg-linear-to-br from-purple-700 to-purple-900 p-6 rounded-2xl border-2 border-purple-400/50"
                         >
                             <div className="text-4xl mb-2">🎓</div>
                             <h3 className="text-2xl font-bold mb-2">Student Night</h3>
@@ -463,9 +451,7 @@ export default function Konfusion() {
                                     <Clock className="w-6 h-6 mt-1 text-purple-400" />
                                     <div>
                                         <h4 className="font-semibold mb-1">Opening Hours</h4>
-                                        <p className="text-purple-300 text-sm">Friday: 10PM - 4AM</p>
-                                        <p className="text-purple-300 text-sm">Saturday: 10PM - 5AM</p>
-                                        <p className="text-purple-300 text-sm">Special Events: Varies</p>
+                                        <p className="text-purple-300 text-sm">Friday - Saturday: 3PM - 3AM</p>
                                     </div>
                                 </div>
                                 <div className="flex items-start gap-4">

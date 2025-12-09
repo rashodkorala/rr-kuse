@@ -96,21 +96,13 @@ export default function VenueNav({ variant = 'robroy', activeSection = 'home' }:
                             <Button
                                 variant="outline"
                                 className={`
-                  border-white/30 text-white hover:bg-white/10
-                  ${isRobRoy ? 'hover:border-purple-400' : 'hover:border-orange-400'}
-                `}
+                                    ${isRobRoy
+                                        ? 'bg-purple-950/90 hover:bg-purple-900/95 text-white border-purple-700/50 hover:border-purple-600/70'
+                                        : 'bg-orange-600/95 hover:bg-orange-700/95 text-white border-orange-500/50 hover:border-orange-400/70'
+                                    }
+                                `}
                             >
-                                {isRobRoy ? (
-                                    <>
-                                        <Sparkles className="w-4 h-4 mr-2" />
-                                        Visit Konfusion
-                                    </>
-                                ) : (
-                                    <>
-                                        <Beer className="w-4 h-4 mr-2" />
-                                        Visit Rob Roy
-                                    </>
-                                )}
+                                Visit {isRobRoy ? 'Konfusion' : 'Rob Roy'}
                             </Button>
                         </Link>
                     </div>

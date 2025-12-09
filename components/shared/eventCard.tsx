@@ -102,7 +102,7 @@ export default function EventCard({ event, variant = 'robroy' }: EventCardProps)
                     <Button
                         className={`w-full ${isRobRoy
                             ? 'bg-orange-600 hover:bg-orange-700 text-white'
-                            : 'bg-purple-600 hover:bg-purple-500 text-white'
+                            : 'bg-purple-600 hover:bg-purple-700 text-white'
                             }`}
                     >
                         {event.isSoldOut ? 'Join Waitlist' : 'Get Tickets'}

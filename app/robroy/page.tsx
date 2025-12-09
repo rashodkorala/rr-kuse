@@ -244,7 +244,7 @@ export default function RobRoy() {
                         </p>
                     </motion.div>
 
-                    <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
                         <motion.div
                             initial={{ opacity: 0, y: 20 }}
                             whileInView={{ opacity: 1, y: 0 }}
@@ -252,9 +252,9 @@ export default function RobRoy() {
                             className="bg-linear-to-br from-orange-600 to-orange-700 p-6 rounded-2xl text-white"
                         >
                             <div className="text-4xl mb-2">🍺</div>
-                            <h3 className="text-2xl font-bold mb-2">£3.50</h3>
-                            <p className="text-orange-100">Pint of Lager</p>
-                            <p className="text-sm text-orange-200 mt-2">All day, every day</p>
+                            <h3 className="text-2xl font-bold mb-2">Tall Boy Tuesday</h3>
+                            <p className="text-orange-100">Special Tall Boy Deals</p>
+                            <p className="text-sm text-orange-200 mt-2">Every Tuesday</p>
                         </motion.div>
 
                         <motion.div
@@ -264,10 +264,10 @@ export default function RobRoy() {
                             transition={{ delay: 0.1 }}
                             className="bg-linear-to-br from-orange-700 to-red-800 p-6 rounded-2xl text-white"
                         >
-                            <div className="text-4xl mb-2">🥃</div>
-                            <h3 className="text-2xl font-bold mb-2">£4</h3>
-                            <p className="text-orange-100">House Spirits</p>
-                            <p className="text-sm text-orange-200 mt-2">+ mixer</p>
+                            <div className="text-4xl mb-2">🎤</div>
+                            <h3 className="text-2xl font-bold mb-2">Open Mic</h3>
+                            <p className="text-orange-100">Show Your Talent</p>
+                            <p className="text-sm text-orange-200 mt-2">Every Wednesday</p>
                         </motion.div>
 
                         <motion.div
@@ -277,10 +277,10 @@ export default function RobRoy() {
                             transition={{ delay: 0.2 }}
                             className="bg-linear-to-br from-orange-600 to-orange-700 p-6 rounded-2xl text-white"
                         >
-                            <div className="text-4xl mb-2">🍷</div>
-                            <h3 className="text-2xl font-bold mb-2">£16</h3>
-                            <p className="text-orange-100">House Wine</p>
-                            <p className="text-sm text-orange-200 mt-2">Bottle</p>
+                            <div className="text-4xl mb-2">2️⃣4️⃣1️⃣</div>
+                            <h3 className="text-2xl font-bold mb-2">2 for 1</h3>
+                            <p className="text-orange-100">Double the Fun</p>
+                            <p className="text-sm text-orange-200 mt-2">Every Thursday</p>
                         </motion.div>
 
                         <motion.div
@@ -288,12 +288,26 @@ export default function RobRoy() {
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true }}
                             transition={{ delay: 0.3 }}
-                            className="bg-linear-to-br from-orange-700 to-red-800 p-6 rounded-2xl text-white border-2 border-white/30"
+                            className="bg-linear-to-br from-orange-700 to-red-800 p-6 rounded-2xl text-white"
                         >
-                            <div className="text-4xl mb-2">⭐</div>
-                            <h3 className="text-2xl font-bold mb-2">Happy Hour</h3>
-                            <p className="text-orange-100">50% Off All Cocktails</p>
-                            <p className="text-sm text-orange-200 mt-2">5PM - 7PM Daily</p>
+                            <div className="text-4xl mb-2">💰</div>
+                            <h3 className="text-2xl font-bold mb-2">2 for £9.50</h3>
+                            <p className="text-orange-100">Selected Drinks</p>
+                            <p className="text-sm text-orange-200 mt-2">Friday & Saturday</p>
+                        </motion.div>
+
+                        <motion.div
+                            initial={{ opacity: 0, y: 20 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ once: true }}
+                            transition={{ delay: 0.4 }}
+                            className="bg-linear-to-br from-orange-600 to-orange-700 p-6 rounded-2xl text-white border-2 border-white/30"
+                        >
+                            <div className="text-4xl mb-2">💣</div>
+                            <h3 className="text-2xl font-bold mb-2">3 for £10</h3>
+                            <p className="text-orange-100">Cherrybombs, Jagerbombs</p>
+                            <p className="text-orange-100">& Jolly Ranchers</p>
+                            <p className="text-sm text-orange-200 mt-2">All Week</p>
                         </motion.div>
                     </div>
 
@@ -491,9 +505,8 @@ export default function RobRoy() {
                                     <Clock className="w-6 h-6 mt-1 text-orange-400" />
                                     <div>
                                         <h4 className="font-semibold mb-1 text-white">Opening Hours</h4>
-                                        <p className="text-gray-400 text-sm">Mon-Thu: 4PM - 12AM</p>
-                                        <p className="text-gray-400 text-sm">Fri-Sat: 12PM - 2AM</p>
-                                        <p className="text-gray-400 text-sm">Sun: 12PM - 11PM</p>
+                                        <p className="text-gray-400 text-sm">Tuesday - Wednesday: 3PM - 2AM</p>
+                                        <p className="text-gray-400 text-sm">Thursday - Saturday: 3PM - 3AM</p>
                                     </div>
                                 </div>
                                 <div className="flex items-start gap-4">
