@@ -164,7 +164,7 @@ export default function Konfusion() {
             <VenueNav variant="konfusion" />
 
             {/* Hero Section */}
-            <section className="relative h-screen flex items-center justify-center overflow-hidden">
+            <section className="relative min-h-[100svh] flex items-center justify-center overflow-hidden">
                 <div
                     className="absolute inset-0 bg-cover bg-center"
                     style={{ backgroundImage: 'url(https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=1600&q=80)' }}
@@ -266,7 +266,7 @@ export default function Konfusion() {
             </section>
 
             {/* Events Section */}
-            <section id="events" className="py-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+            <section id="events" className="scroll-mt-24 py-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
@@ -389,7 +389,7 @@ export default function Konfusion() {
             </section>
 
             {/* DJs Section */}
-            <section id="performers" className="py-24 bg-linear-to-b from-purple-950/30 via-purple-950/50 to-black">
+            <section id="performers" className="scroll-mt-24 py-24 bg-linear-to-b from-purple-950/30 via-purple-950/50 to-black">
                 <div className="px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
                     <motion.div
                         initial={{ opacity: 0, y: 20 }}
@@ -412,7 +412,7 @@ export default function Konfusion() {
             </section>
 
             {/* Gallery Section */}
-            <section id="gallery" className="py-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+            <section id="gallery" className="scroll-mt-24 py-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
@@ -429,7 +429,7 @@ export default function Konfusion() {
             </section>
 
             {/* About Section */}
-            <section id="about" className="py-24 bg-linear-to-b from-purple-900/30 to-black">
+            <section id="about" className="scroll-mt-24 py-24 bg-linear-to-b from-purple-900/30 to-black">
                 <div className="px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
                     <div className="grid lg:grid-cols-2 gap-16 items-center">
                         <motion.div

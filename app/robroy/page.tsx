@@ -130,7 +130,7 @@ export default function RobRoy() {
             <VenueNav variant="robroy" />
 
             {/* Hero Section */}
-            <section className="relative h-screen flex items-center justify-center overflow-hidden">
+            <section className="relative min-h-[100svh] flex items-center justify-center overflow-hidden">
                 <div
                     className="absolute inset-0 bg-cover bg-center"
                     style={{ backgroundImage: 'url(https://images.unsplash.com/photo-1514933651103-005eec06c04b?w=1600)' }}
@@ -192,7 +192,7 @@ export default function RobRoy() {
             </section>
 
             {/* Events Section */}
-            <section id="events" className="py-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto bg-gray-900">
+            <section id="events" className="scroll-mt-24 py-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto bg-gray-900">
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
@@ -327,7 +327,7 @@ export default function RobRoy() {
             </section>
 
             {/* Bands Section */}
-            <section id="performers" className="py-24 bg-gray-900">
+            <section id="performers" className="scroll-mt-24 py-24 bg-gray-900">
                 <div className="px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
                     <motion.div
                         initial={{ opacity: 0, y: 20 }}
@@ -464,7 +464,7 @@ export default function RobRoy() {
             </section>
 
             {/* Gallery Section */}
-            <section id="gallery" className="py-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto bg-gray-900">
+            <section id="gallery" className="scroll-mt-24 py-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto bg-gray-900">
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
@@ -481,7 +481,7 @@ export default function RobRoy() {
             </section>
 
             {/* About Section */}
-            <section id="about" className="py-24 bg-linear-to-b from-black via-gray-900 to-black text-white">
+            <section id="about" className="scroll-mt-24 py-24 bg-linear-to-b from-black via-gray-900 to-black text-white">
                 <div className="px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
                     <div className="grid lg:grid-cols-2 gap-16 items-center">
                         <motion.div

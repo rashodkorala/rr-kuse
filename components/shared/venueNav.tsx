@@ -7,9 +7,10 @@ import { createPageUrl } from '../../utils';
 import { Menu, ArrowLeft, Beer, Sparkles } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { getVenueStyles, type VenueVariant } from "@/lib/venue-styles";
 
 interface VenueNavProps {
-    variant?: 'robroy' | 'konfusion';
+    variant?: VenueVariant;
     activeSection?: string;
 }
 
@@ -17,6 +18,7 @@ export default function VenueNav({ variant = 'robroy', activeSection = 'home' }:
     const [scrolled, setScrolled] = useState(false);
     const [isOpen, setIsOpen] = useState(false);
     const isRobRoy = variant === 'robroy';
+    const styles = getVenueStyles(variant);
 
     useEffect(() => {
         const handleScroll = () => {
@@ -48,9 +50,7 @@ export default function VenueNav({ variant = 'robroy', activeSection = 'home' }:
             className={`
         fixed top-0 left-0 right-0 z-50 transition-all duration-300
         ${scrolled
-                    ? isRobRoy
-                        ? 'bg-orange-600/95 backdrop-blur-md shadow-lg'
-                        : 'bg-purple-950/95 backdrop-blur-md shadow-lg'
+                    ? styles.nav.scrolledContainer
                     : 'bg-transparent'
                 }
       `}
@@ -96,10 +96,7 @@ export default function VenueNav({ variant = 'robroy', activeSection = 'home' }:
                             <Button
                                 variant="outline"
                                 className={`
-                                    ${isRobRoy
-                                        ? 'bg-purple-950/90 hover:bg-purple-900/95 text-white border-purple-700/50 hover:border-purple-600/70'
-                                        : 'bg-orange-600/95 hover:bg-orange-700/95 text-white border-orange-500/50 hover:border-orange-400/70'
-                                    }
+                                    ${styles.nav.switchVenueButton}
                                 `}
                             >
                                 Visit {isRobRoy ? 'Konfusion' : 'Rob Roy'}
@@ -118,7 +115,7 @@ export default function VenueNav({ variant = 'robroy', activeSection = 'home' }:
                             side="right"
                             className={`
                 w-72 border-l-0
-                ${isRobRoy ? 'bg-orange-700' : 'bg-purple-900'}
+                ${styles.nav.mobileSheet}
               `}
                         >
                             <div className="flex flex-col gap-6 mt-8">
