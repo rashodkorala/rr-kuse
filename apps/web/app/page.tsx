@@ -10,10 +10,10 @@ export default function Home() {
   const [hoveredSide, setHoveredSide] = useState<'robroy' | 'konfusion' | null>(null);
 
   return (
-    <div className="h-screen w-screen overflow-hidden relative bg-black">
+    <div className="h-[100svh] w-screen overflow-hidden relative bg-black">
       {/* Rob Roy Side */}
       <motion.div
-        className="absolute top-0 left-0 h-full cursor-pointer overflow-hidden"
+        className="hidden md:block absolute top-0 left-0 h-full cursor-pointer overflow-hidden"
         initial={{ width: '50%' }}
         animate={{
           width: hoveredSide === 'robroy' ? '65%' : hoveredSide === 'konfusion' ? '35%' : '50%'
@@ -93,7 +93,7 @@ export default function Home() {
 
       {/* Konfusion Side */}
       <motion.div
-        className="absolute top-0 right-0 h-full cursor-pointer overflow-hidden"
+        className="hidden md:block absolute top-0 right-0 h-full cursor-pointer overflow-hidden"
         initial={{ width: '50%' }}
         animate={{
           width: hoveredSide === 'konfusion' ? '65%' : hoveredSide === 'robroy' ? '35%' : '50%'

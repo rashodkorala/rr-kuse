@@ -3,6 +3,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Music, Headphones, Instagram, ExternalLink } from 'lucide-react';
+import { getVenueStyles, type VenueVariant } from "@/lib/venue-styles";
 
 interface Performer {
     name: string;
@@ -16,11 +17,11 @@ interface Performer {
 
 interface PerformerCardProps {
     performer: Performer;
-    variant?: 'robroy' | 'konfusion';
+    variant?: VenueVariant;
 }
 
 export default function PerformerCard({ performer, variant = 'robroy' }: PerformerCardProps) {
-    const isRobRoy = variant === 'robroy';
+    const styles = getVenueStyles(variant);
     const Icon = performer.type === 'dj' ? Headphones : Music;
 
     return (
@@ -29,10 +30,7 @@ export default function PerformerCard({ performer, variant = 'robroy' }: Perform
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
             whileHover={{ scale: 1.03 }}
-            className={`
-        relative rounded-2xl overflow-hidden group cursor-pointer
-        ${isRobRoy ? 'shadow-xl' : 'shadow-2xl shadow-purple-900/50'}
-      `}
+            className={`relative rounded-2xl overflow-hidden group cursor-pointer ${styles.performerCard.shadow}`}
         >
             {/* Image */}
             <div className="aspect-square overflow-hidden">
@@ -46,17 +44,14 @@ export default function PerformerCard({ performer, variant = 'robroy' }: Perform
             {/* Overlay */}
             <div className={`
         absolute inset-0 transition-opacity duration-300
-        ${isRobRoy
-                    ? 'bg-gradient-to-t from-orange-900/90 via-orange-800/50 to-transparent'
-                    : 'bg-gradient-to-t from-purple-950/95 via-purple-900/60 to-transparent'
-                }
+        ${styles.performerCard.overlay}
       `} />
 
             {/* Content */}
             <div className="absolute bottom-0 left-0 right-0 p-5">
                 <div className="flex items-center gap-2 mb-2">
-                    <Icon className={`w-4 h-4 ${isRobRoy ? 'text-orange-300' : 'text-purple-300'}`} />
-                    <span className={`text-xs uppercase tracking-wider ${isRobRoy ? 'text-orange-300' : 'text-purple-300'}`}>
+                    <Icon className={`w-4 h-4 ${styles.performerCard.accentText}`} />
+                    <span className={`text-xs uppercase tracking-wider ${styles.performerCard.accentText}`}>
                         {performer.type === 'dj' ? 'DJ' : 'Live Band'}
                     </span>
                 </div>
@@ -65,7 +60,7 @@ export default function PerformerCard({ performer, variant = 'robroy' }: Perform
                     {performer.name}
                 </h3>
 
-                <p className={`text-sm mb-3 ${isRobRoy ? 'text-orange-100/80' : 'text-purple-200/80'}`}>
+                <p className={`text-sm mb-3 ${styles.performerCard.genreText}`}>
                     {performer.genre}
                 </p>
 
@@ -76,7 +71,7 @@ export default function PerformerCard({ performer, variant = 'robroy' }: Perform
                             href={performer.instagram}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className={`p-2 rounded-full ${isRobRoy ? 'bg-orange-600/50 hover:bg-orange-600' : 'bg-purple-600/50 hover:bg-purple-600'} transition-colors`}
+                            className={`p-2 rounded-full ${styles.performerCard.socialButton} transition-colors`}
                         >
                             <Instagram className="w-4 h-4 text-white" />
                         </a>
@@ -86,7 +81,7 @@ export default function PerformerCard({ performer, variant = 'robroy' }: Perform
                             href={performer.website}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className={`p-2 rounded-full ${isRobRoy ? 'bg-orange-600/50 hover:bg-orange-600' : 'bg-purple-600/50 hover:bg-purple-600'} transition-colors`}
+                            className={`p-2 rounded-full ${styles.performerCard.socialButton} transition-colors`}
                         >
                             <ExternalLink className="w-4 h-4 text-white" />
                         </a>
@@ -98,7 +93,7 @@ export default function PerformerCard({ performer, variant = 'robroy' }: Perform
             {performer.nextDate && (
                 <div className={`
           absolute top-4 right-4 px-3 py-1.5 rounded-full text-xs font-medium
-          ${isRobRoy ? 'bg-orange-500 text-white' : 'bg-purple-500 text-white'}
+          ${styles.performerCard.nextBadge}
         `}>
                     Next: {performer.nextDate}
                 </div>

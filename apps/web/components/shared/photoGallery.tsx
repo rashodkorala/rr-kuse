@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, ChevronLeft, ChevronRight, ZoomIn } from 'lucide-react';
 import { Dialog, DialogContent } from "@/components/ui/dialog";
+import { getVenueStyles, type VenueVariant } from "@/lib/venue-styles";
 
 interface Photo {
     url: string;
@@ -12,12 +13,12 @@ interface Photo {
 
 interface PhotoGalleryProps {
     photos: Photo[];
-    variant?: 'robroy' | 'konfusion';
+    variant?: VenueVariant;
 }
 
 export default function PhotoGallery({ photos, variant = 'robroy' }: PhotoGalleryProps) {
     const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
-    const isRobRoy = variant === 'robroy';
+    const styles = getVenueStyles(variant);
 
     const openLightbox = (index: number) => setSelectedIndex(index);
     const closeLightbox = () => setSelectedIndex(null);
@@ -37,7 +38,7 @@ export default function PhotoGallery({ photos, variant = 'robroy' }: PhotoGaller
     return (
         <>
             {/* Masonry Grid */}
-            <div className="columns-2 md:columns-3 lg:columns-4 gap-4 space-y-4">
+            <div className="columns-1 sm:columns-2 md:columns-3 lg:columns-4 gap-4 space-y-4">
                 {photos.map((photo: Photo, index: number) => (
                     <motion.div
                         key={index}
@@ -57,7 +58,7 @@ export default function PhotoGallery({ photos, variant = 'robroy' }: PhotoGaller
                         {/* Hover Overlay */}
                         <div className={`
               absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center
-              ${isRobRoy ? 'bg-orange-900/60' : 'bg-purple-900/70'}
+              ${styles.photoGallery.hoverOverlay}
             `}>
                             <ZoomIn className="w-8 h-8 text-white" />
                         </div>

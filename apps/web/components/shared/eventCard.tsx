@@ -5,6 +5,7 @@ import { motion } from 'framer-motion';
 import { Clock, Ticket } from 'lucide-react';
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { getVenueStyles, type VenueVariant } from "@/lib/venue-styles";
 
 interface Event {
     id: number;
@@ -21,11 +22,11 @@ interface Event {
 
 interface EventCardProps {
     event: Event;
-    variant?: 'robroy' | 'konfusion';
+    variant?: VenueVariant;
 }
 
 export default function EventCard({ event, variant = 'robroy' }: EventCardProps) {
-    const isRobRoy = variant === 'robroy';
+    const styles = getVenueStyles(variant);
 
     return (
         <motion.div
@@ -33,13 +34,7 @@ export default function EventCard({ event, variant = 'robroy' }: EventCardProps)
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             whileHover={{ y: -5 }}
-            className={`
-        rounded-2xl overflow-hidden shadow-xl
-        ${isRobRoy
-                    ? 'bg-gradient-to-br from-gray-900 to-gray-800 border border-orange-600/30'
-                    : 'bg-gradient-to-br from-purple-950 to-violet-900 border border-purple-700/50'
-                }
-      `}
+            className={`rounded-2xl overflow-hidden shadow-xl ${styles.eventCard.container}`}
         >
             {/* Image */}
             <div className="relative h-48 overflow-hidden">
@@ -48,12 +43,12 @@ export default function EventCard({ event, variant = 'robroy' }: EventCardProps)
                     alt={event.title}
                     className="w-full h-full object-cover"
                 />
-                <div className={`absolute inset-0 ${isRobRoy ? 'bg-orange-900/20' : 'bg-purple-900/40'}`} />
+                <div className={`absolute inset-0 ${styles.eventCard.imageOverlay}`} />
 
                 {/* Date Badge */}
                 <div className={`
           absolute top-4 left-4 px-3 py-2 rounded-lg backdrop-blur-md
-          ${isRobRoy ? 'bg-orange-600/90 text-white' : 'bg-purple-600/90 text-white'}
+          ${styles.eventCard.dateBadge}
         `}>
                     <div className="text-2xl font-bold leading-none">{event.day}</div>
                     <div className="text-xs uppercase tracking-wider">{event.month}</div>
@@ -69,7 +64,7 @@ export default function EventCard({ event, variant = 'robroy' }: EventCardProps)
                         Sold Out
                     </Badge>
                 ) : (
-                    <Badge className={`absolute top-4 right-4 ${isRobRoy ? 'bg-green-600' : 'bg-green-500'} text-white`}>
+                    <Badge className={`absolute top-4 right-4 ${styles.eventCard.upcomingBadge}`}>
                         Upcoming
                     </Badge>
                 )}
@@ -77,21 +72,21 @@ export default function EventCard({ event, variant = 'robroy' }: EventCardProps)
 
             {/* Content */}
             <div className="p-5">
-                <h3 className={`text-xl font-bold mb-2 ${isRobRoy ? 'text-white' : 'text-white'}`}>
+                <h3 className="text-xl font-bold mb-2 text-white">
                     {event.title}
                 </h3>
 
-                <p className={`text-sm mb-4 line-clamp-2 ${isRobRoy ? 'text-gray-400' : 'text-purple-200'}`}>
+                <p className={`text-sm mb-4 line-clamp-2 ${styles.eventCard.descriptionText}`}>
                     {event.description}
                 </p>
 
                 <div className="space-y-2 mb-4">
-                    <div className={`flex items-center gap-2 text-sm ${isRobRoy ? 'text-gray-400' : 'text-purple-300'}`}>
+                    <div className={`flex items-center gap-2 text-sm ${styles.eventCard.metaText}`}>
                         <Clock className="w-4 h-4" />
                         <span>{event.time}</span>
                     </div>
                     {event.price && (
-                        <div className={`flex items-center gap-2 text-sm ${isRobRoy ? 'text-gray-400' : 'text-purple-300'}`}>
+                        <div className={`flex items-center gap-2 text-sm ${styles.eventCard.metaText}`}>
                             <Ticket className="w-4 h-4" />
                             <span>{event.price}</span>
                         </div>
@@ -100,10 +95,7 @@ export default function EventCard({ event, variant = 'robroy' }: EventCardProps)
 
                 {!event.isPast && (
                     <Button
-                        className={`w-full ${isRobRoy
-                            ? 'bg-orange-600 hover:bg-orange-700 text-white'
-                            : 'bg-purple-600 hover:bg-purple-700 text-white'
-                            }`}
+                        className={`w-full ${styles.eventCard.ctaButton}`}
                     >
                         {event.isSoldOut ? 'Join Waitlist' : 'Get Tickets'}
                     </Button>

@@ -1,0 +1,22 @@
+{
+  "name": "@rr-kuse/cms",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "sanity dev",
+    "build": "sanity build",
+    "start": "sanity start",
+    "deploy": "sanity deploy"
+  },
+  "dependencies": {
+    "@sanity/vision": "^5.9.0",
+    "react": "19.2.4",
+    "react-dom": "19.2.4",
+    "sanity": "^5.9.0",
+    "styled-components": "^6.3.9"
+  },
+  "devDependencies": {
+    "@types/node": "^20.19.25",
+    "typescript": "^5.9.3"
+  }
+}
