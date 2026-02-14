@@ -112,7 +112,7 @@ export default function Home() {
           />
           {/* Overlay */}
           <motion.div
-            className="absolute inset-0 bg-linear-to-bl from-purple-900/90 via-violet-800/85 to-purple-950/95"
+            className="absolute inset-0 bg-linear-to-bl from-black/90 via-black/80 to-black/95"
             animate={{ opacity: hoveredSide === 'konfusion' ? 0.75 : 0.85 }}
             transition={{ duration: 0.8, ease: [0.25, 0.1, 0.25, 1] }}
           />
@@ -208,7 +208,7 @@ export default function Home() {
               backgroundImage: 'url(https://images.unsplash.com/photo-1571266028243-e4733b0f0bb0?w=800)',
             }}
           />
-          <div className="absolute inset-0 bg-linear-to-bl from-purple-900/90 via-violet-800/85 to-purple-950/95" />
+          <div className="absolute inset-0 bg-linear-to-bl from-black/90 via-black/80 to-black/95" />
           <div className="relative h-full flex flex-col justify-center items-center text-white p-6">
             <Sparkles className="w-12 h-12 mb-4" />
             <h2 className="font-bold text-4xl mb-2">KONFUSION</h2>

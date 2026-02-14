@@ -31,14 +31,15 @@ type VenueStyleConfig = {
 const venueStyles: Record<VenueVariant, VenueStyleConfig> = {
   robroy: {
     nav: {
-      scrolledContainer: "bg-orange-600/95 backdrop-blur-md shadow-lg",
+      scrolledContainer:
+        "bg-black/35 backdrop-blur-xl border-b border-white/10 shadow-lg shadow-black/40",
       switchVenueButton:
-        "bg-orange-600/95 hover:bg-orange-700/95 text-white border-orange-500/50 hover:border-orange-400/70",
-      mobileSheet: "bg-orange-700",
+        "bg-orange-600/80 hover:bg-orange-700/90 text-white border-orange-500/40 hover:border-orange-400/70",
+      mobileSheet: "bg-black/85 backdrop-blur-xl border-l border-white/10",
     },
     eventCard: {
       container:
-        "bg-gradient-to-br from-gray-900 to-gray-800 border border-orange-600/30",
+        "bg-gradient-to-br from-zinc-950 to-zinc-900 border border-orange-600/35",
       imageOverlay: "bg-orange-900/20",
       dateBadge: "bg-orange-600/90 text-white",
       descriptionText: "text-gray-400",
@@ -49,7 +50,7 @@ const venueStyles: Record<VenueVariant, VenueStyleConfig> = {
     performerCard: {
       shadow: "shadow-xl",
       overlay:
-        "bg-gradient-to-t from-orange-900/90 via-orange-800/50 to-transparent",
+        "bg-gradient-to-t from-black/95 via-orange-950/45 to-transparent",
       accentText: "text-orange-300",
       genreText: "text-orange-100/80",
       socialButton: "bg-orange-600/50 hover:bg-orange-600",
@@ -61,14 +62,15 @@ const venueStyles: Record<VenueVariant, VenueStyleConfig> = {
   },
   konfusion: {
     nav: {
-      scrolledContainer: "bg-purple-950/95 backdrop-blur-md shadow-lg",
+      scrolledContainer:
+        "bg-black/35 backdrop-blur-xl border-b border-purple-500/20 shadow-lg shadow-black/40",
       switchVenueButton:
-        "bg-purple-600/95 hover:bg-purple-700/95 text-white border-purple-500/50 hover:border-purple-400/70",
-      mobileSheet: "bg-purple-900",
+        "bg-purple-600/80 hover:bg-purple-700/90 text-white border-purple-500/40 hover:border-purple-400/70",
+      mobileSheet: "bg-black/85 backdrop-blur-xl border-l border-purple-500/20",
     },
     eventCard: {
       container:
-        "bg-gradient-to-br from-purple-950 to-violet-900 border border-purple-700/50",
+        "bg-gradient-to-br from-zinc-950 to-black border border-purple-700/55",
       imageOverlay: "bg-purple-900/40",
       dateBadge: "bg-purple-600/90 text-white",
       descriptionText: "text-purple-200",
@@ -79,7 +81,7 @@ const venueStyles: Record<VenueVariant, VenueStyleConfig> = {
     performerCard: {
       shadow: "shadow-2xl shadow-purple-900/50",
       overlay:
-        "bg-gradient-to-t from-purple-950/95 via-purple-900/60 to-transparent",
+        "bg-gradient-to-t from-black/95 via-purple-950/55 to-transparent",
       accentText: "text-purple-300",
       genreText: "text-purple-200/80",
       socialButton: "bg-purple-600/50 hover:bg-purple-600",

@@ -160,7 +160,7 @@ export default function Konfusion() {
     const [particleData] = useState<ParticleData[]>(() => generateParticleData());
 
     return (
-        <div className="min-h-screen bg-linear-to-b from-purple-950 to-black text-white">
+        <div className="min-h-screen bg-black text-white">
             <VenueNav variant="konfusion" />
 
             {/* Hero Section */}
@@ -169,7 +169,7 @@ export default function Konfusion() {
                     className="absolute inset-0 bg-cover bg-center"
                     style={{ backgroundImage: 'url(https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=1600&q=80)' }}
                 />
-                <div className="absolute inset-0 bg-linear-to-b from-purple-950/80 via-purple-900/70 to-black/90" />
+                <div className="absolute inset-0 bg-linear-to-b from-black/85 via-black/75 to-black/92" />
 
                 {/* Animated particles */}
                 <div className="absolute inset-0 overflow-hidden">
@@ -234,7 +234,7 @@ export default function Konfusion() {
                             <Button
                                 size="lg"
                                 variant="outline"
-                                className="bg-purple-950/90 hover:bg-purple-900/95 text-white border-purple-700/50 hover:border-purple-600/70 px-8"
+                                className="bg-black/60 hover:bg-black/75 text-white border-purple-500/50 hover:border-purple-400/70 px-8"
                             >
                                 <Headphones className="w-5 h-5 mr-2" />
                                 DJ Lineup
@@ -280,7 +280,7 @@ export default function Konfusion() {
                 </motion.div>
 
                 <Tabs defaultValue="upcoming" className="w-full">
-                    <TabsList className="grid w-full max-w-md mx-auto grid-cols-2 mb-12 bg-purple-900/50">
+                    <TabsList className="grid w-full max-w-md mx-auto grid-cols-2 mb-12 bg-black/50 border border-purple-500/25">
                         <TabsTrigger value="upcoming" className="text-lg data-[state=active]:bg-purple-600">Upcoming</TabsTrigger>
                         <TabsTrigger value="past" className="text-lg data-[state=active]:bg-purple-600">Past Events</TabsTrigger>
                     </TabsList>
@@ -304,7 +304,7 @@ export default function Konfusion() {
             </section>
 
             {/* Drink Deals Section */}
-            <section className="py-24 bg-linear-to-b from-black to-purple-950/30">
+            <section className="py-24 bg-linear-to-b from-black to-zinc-950">
                 <div className="px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
                     <motion.div
                         initial={{ opacity: 0, y: 20 }}
@@ -323,7 +323,7 @@ export default function Konfusion() {
                             initial={{ opacity: 0, y: 20 }}
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true }}
-                            className="bg-linear-to-br from-purple-700 to-purple-900 p-6 rounded-2xl border border-purple-500/30"
+                            className="bg-black/55 backdrop-blur-sm p-6 rounded-2xl border border-purple-500/35"
                         >
                             <div className="text-4xl mb-2">💰</div>
                             <h3 className="text-2xl font-bold mb-2">2 for £9.50</h3>
@@ -336,7 +336,7 @@ export default function Konfusion() {
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true }}
                             transition={{ delay: 0.1 }}
-                            className="bg-linear-to-br from-purple-600 to-purple-800 p-6 rounded-2xl border border-purple-400/30"
+                            className="bg-black/55 backdrop-blur-sm p-6 rounded-2xl border border-purple-400/35"
                         >
                             <div className="text-4xl mb-2">💣</div>
                             <h3 className="text-2xl font-bold mb-2">3 for £10</h3>
@@ -350,7 +350,7 @@ export default function Konfusion() {
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true }}
                             transition={{ delay: 0.2 }}
-                            className="bg-linear-to-br from-purple-700 to-purple-900 p-6 rounded-2xl border-2 border-purple-400/50"
+                            className="bg-black/55 backdrop-blur-sm p-6 rounded-2xl border-2 border-purple-400/50"
                         >
                             <div className="text-4xl mb-2">🎓</div>
                             <h3 className="text-2xl font-bold mb-2">Student Night</h3>
@@ -365,7 +365,7 @@ export default function Konfusion() {
                         viewport={{ once: true }}
                         className="mt-12 grid md:grid-cols-2 gap-6"
                     >
-                        <div className="bg-purple-900/30 border border-purple-500/30 rounded-xl p-6">
+                        <div className="bg-black/50 border border-purple-500/35 rounded-xl p-6">
                             <h4 className="text-xl font-bold mb-3">🍾 VIP Bottle Service</h4>
                             <p className="text-purple-300 mb-4">Reserve a table and get premium bottle service with mixers and ice</p>
                             <ul className="text-purple-200 text-sm space-y-2">
@@ -375,7 +375,7 @@ export default function Konfusion() {
                             </ul>
                         </div>
 
-                        <div className="bg-purple-900/30 border border-purple-500/30 rounded-xl p-6">
+                        <div className="bg-black/50 border border-purple-500/35 rounded-xl p-6">
                             <h4 className="text-xl font-bold mb-3">⚡ Pre-Drinks Package</h4>
                             <p className="text-purple-300 mb-4">Get the party started before you hit the club</p>
                             <ul className="text-purple-200 text-sm space-y-2">
@@ -389,7 +389,7 @@ export default function Konfusion() {
             </section>
 
             {/* DJs Section */}
-            <section id="performers" className="scroll-mt-24 py-24 bg-linear-to-b from-purple-950/30 via-purple-950/50 to-black">
+            <section id="performers" className="scroll-mt-24 py-24 bg-linear-to-b from-zinc-950 via-black to-black">
                 <div className="px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
                     <motion.div
                         initial={{ opacity: 0, y: 20 }}
@@ -429,7 +429,7 @@ export default function Konfusion() {
             </section>
 
             {/* About Section */}
-            <section id="about" className="scroll-mt-24 py-24 bg-linear-to-b from-purple-900/30 to-black">
+            <section id="about" className="scroll-mt-24 py-24 bg-linear-to-b from-zinc-950 to-black">
                 <div className="px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
                     <div className="grid lg:grid-cols-2 gap-16 items-center">
                         <motion.div
@@ -499,7 +499,7 @@ export default function Konfusion() {
             </section>
 
             {/* Footer */}
-            <footer className="bg-black border-t border-purple-900/50 py-12">
+            <footer className="bg-black border-t border-white/10 py-12">
                 <div className="px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
                     <div className="grid md:grid-cols-3 gap-8 items-center">
                         <div className="flex items-center gap-3">
