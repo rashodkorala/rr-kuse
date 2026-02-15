@@ -147,16 +147,6 @@ export default function KonfusionContent({
                                 DJ Lineup
                             </Button>
                         </div>
-
-                        {/* Student Badge */}
-                        <motion.div
-                            className="mt-8 inline-flex items-center gap-2 px-4 py-2 bg-purple-600/30 rounded-full border border-purple-500/50"
-                            animate={{ scale: [1, 1.02, 1] }}
-                            transition={{ duration: 2, repeat: Infinity }}
-                        >
-                            <span className="text-sm">&#127891;</span>
-                            <span className="text-purple-200 text-sm">Student Night Every Friday - NUS Discounts!</span>
-                        </motion.div>
                     </motion.div>
                 </div>
 
@@ -341,10 +331,19 @@ export default function KonfusionContent({
                         >
                             <h2 className="text-4xl md:text-5xl font-bold mb-6">About Konfusion</h2>
                             <p className="text-lg text-purple-200 mb-6 leading-relaxed">
-                                Born from the belief that the best nights are the ones you can&apos;t quite remember, Konfusion has been the city&apos;s premier nightclub for students and party lovers alike.
+                                Welcome to Konfusion, St. John&apos;s hottest nightclub. Located at the heart of the iconic George Street in St. John&apos;s, Newfoundland and Labrador. This high-energy multi-level bar offers the ultimate nightlife experience in the capital city, featuring some of the province&apos;s top DJs and performers every weekend.
+                            </p>
+                            <p className="text-lg text-purple-200 mb-6 leading-relaxed">
+                                Dive into the vibrant atmosphere of Konfusion, where the music never stops and the party lasts all night. With our state-of-the-art sound and lighting systems, we promise an unforgettable experience that will keep you coming back for more. Whether you&apos;re celebrating a special occasion or just looking for a night out with friends, Konfusion is the place to be.
+                            </p>
+                            <p className="text-lg text-purple-200 mb-6 leading-relaxed">
+                                Enjoy our wide selection of drinks at the bar, hit the dance floor with your friends, or reserve a VIP section for an exclusive experience complete with bottle service.
+                            </p>
+                            <p className="text-lg text-purple-200 mb-6 leading-relaxed">
+                                Konfusion is St. John&apos;s premier destination for nightlife and entertainment.
                             </p>
                             <p className="text-lg text-purple-200 mb-8 leading-relaxed">
-                                With a state-of-the-art sound system, mind-bending light shows, and the best DJs in the game, we create experiences that blur the line between reality and pure euphoria. Whether you&apos;re here for &pound;2 drinks on student night or an underground techno marathon – welcome to the chaos.
+                                Looking to host a private party, fundraiser, VIP party, pub crawl, or bus crawl? Hit us up, we will do all the planning so you don&apos;t have to!
                             </p>
 
                             <div className="grid sm:grid-cols-2 gap-6">
@@ -359,22 +358,10 @@ export default function KonfusionContent({
                                     <MapPin className="w-6 h-6 mt-1 text-purple-400" />
                                     <div>
                                         <h4 className="font-semibold mb-1">Find Us</h4>
-                                        <p className="text-purple-300 text-sm">45 Club Street</p>
-                                        <p className="text-purple-300 text-sm">City Centre</p>
+                                        <p className="text-purple-300 text-sm">391 Duckworth St</p>
+                                        <p className="text-purple-300 text-sm">St. John&apos;s, NL A1C 1H7</p>
                                     </div>
                                 </div>
-                            </div>
-
-                            {/* Student Promo */}
-                            <div className="mt-8 p-6 bg-purple-600/20 rounded-xl border border-purple-500/30">
-                                <h4 className="font-bold text-lg mb-2 flex items-center gap-2">
-                                    &#127891; Student Specials
-                                </h4>
-                                <ul className="text-purple-200 space-y-1 text-sm">
-                                    <li>&bull; Free entry before 11PM with valid NUS card</li>
-                                    <li>&bull; &pound;2 drinks until midnight every Friday</li>
-                                    <li>&bull; 20% off all tickets with student email</li>
-                                </ul>
                             </div>
                         </motion.div>
 
@@ -399,6 +386,55 @@ export default function KonfusionContent({
                 </div>
             </section>
 
+            {/* Konfusion Patio – Summer only */}
+            <section id="patio" className="scroll-mt-24 py-24 bg-linear-to-b from-black via-purple-950/20 to-black border-t border-purple-500/10">
+                <div className="px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+                    <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        className="text-center max-w-3xl mx-auto"
+                    >
+                        <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-amber-500/20 border border-amber-400/40 text-amber-200 text-sm font-medium mb-6">
+                            <span aria-hidden>☀️</span>
+                            <span>Summer only</span>
+                        </div>
+                        <h2 className="text-4xl md:text-5xl font-bold mb-6">Konfusion Patio</h2>
+                        <p className="text-lg text-purple-200 leading-relaxed mb-6">
+                            Make the most of the season at the Konfusion Patio. Our outdoor space is open during summer, so you can enjoy George Street&apos;s best nightlife under the sun and stars. Same great vibes, DJs, and drinks—with a breeze.
+                        </p>
+                        <p className="text-purple-300 text-sm">
+                            Open seasonally. Check our events and socials for summer hours and patio nights.
+                        </p>
+                    </motion.div>
+                </div>
+            </section>
+
+            {/* Contact */}
+            <section id="contact" className="scroll-mt-24 py-20 bg-zinc-950/80 border-t border-white/10 relative overflow-hidden">
+                <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_50%_50%,rgba(147,51,234,0.08),transparent_70%)]" aria-hidden />
+                <div className="px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto relative">
+                    <motion.div
+                        initial={{ opacity: 0, y: 10 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        className="text-center"
+                    >
+                        <h2 className="text-3xl md:text-4xl font-bold mb-8 tracking-tight">CONTACT</h2>
+                        <div className="flex flex-col sm:flex-row items-center justify-center gap-6 sm:gap-12 text-white/90">
+                            <a href="mailto:hildacoffey@hotmail.com" className="hover:text-purple-400 transition-colors">
+                                <span className="text-white/60 text-sm tracking-wider">E /</span>{' '}
+                                hildacoffey@hotmail.com
+                            </a>
+                            <a href="tel:+17097396270" className="hover:text-purple-400 transition-colors">
+                                <span className="text-white/60 text-sm tracking-wider">T /</span>{' '}
+                                709-739-6270
+                            </a>
+                        </div>
+                    </motion.div>
+                </div>
+            </section>
+
             {/* Footer */}
             <footer className="bg-black border-t border-white/10 py-12">
                 <div className="px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
@@ -418,14 +454,20 @@ export default function KonfusionContent({
                             <a href="#" className="hover:text-purple-500 transition-colors">
                                 <Music className="w-6 h-6" />
                             </a>
-                            <a href="mailto:info@konfusion.club" className="hover:text-purple-500 transition-colors">
+                            <a href="mailto:hildacoffey@hotmail.com" className="hover:text-purple-500 transition-colors">
                                 <Mail className="w-6 h-6" />
                             </a>
                         </div>
 
-                        <p className="text-gray-500 text-sm text-center md:text-right">
-                            &copy; 2024 Konfusion. Over 18s only. ID required.
-                        </p>
+                        <div className="text-gray-500 text-sm text-center md:text-right space-y-1">
+                            <p>&copy; 2024 Konfusion. Over 18s only. ID required.</p>
+                            <p>
+                                Website by{' '}
+                                <a href="https://rashodkorala.com" target="_blank" rel="noopener noreferrer" className="text-purple-400 hover:text-purple-300 transition-colors underline underline-offset-2">
+                                    rashodkorala.com
+                                </a>
+                            </p>
+                        </div>
                     </div>
                 </div>
             </footer>

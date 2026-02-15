@@ -33,6 +33,8 @@ export default function VenueNav({ variant = 'robroy', activeSection = 'home' }:
         { id: 'performers', label: isRobRoy ? 'Bands' : 'DJs' },
         { id: 'gallery', label: 'Gallery' },
         { id: 'about', label: 'About' },
+        ...(variant === 'konfusion' ? [{ id: 'patio' as const, label: 'Patio' }] : []),
+        { id: 'contact', label: 'Contact' },
     ];
 
     const scrollToSection = (id: string) => {

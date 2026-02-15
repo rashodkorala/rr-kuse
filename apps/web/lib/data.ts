@@ -82,10 +82,18 @@ function getRecurringOccurrences(
   return occurrences;
 }
 
+/** Format date as "Wed, Mar 5" for recurring this/next week display */
+function formatShortDate(d: Date): string {
+  const dayName = DAY_NAMES[d.getDay()].slice(0, 3);
+  return `${dayName}, ${MONTHS[d.getMonth()]} ${d.getDate()}`;
+}
+
 function formatEvent(
   e: Record<string, unknown>,
   isPast = false,
   occurrenceDate?: Date,
+  recurringThisWeek?: string,
+  recurringNextWeek?: string,
 ) {
   const date = occurrenceDate ?? (e.event_date ? new Date(e.event_date as string) : new Date(0));
   const startTime = (e.start_time as string) ?? "";
@@ -105,6 +113,8 @@ function formatEvent(
     isPast,
     isSoldOut: (e.status as string) === "cancelled",
     recurringLabel: recurringDay ? `Every ${recurringDay}` : undefined,
+    recurringThisWeek: recurringThisWeek ?? undefined,
+    recurringNextWeek: recurringNextWeek ?? undefined,
   };
 }
 
@@ -132,22 +142,27 @@ export async function getEvents(venueTag: VenueTag) {
     .not("recurring_day", "is", null)
     .order("event_date", { ascending: true });
 
-  const recurringOccurrences: { event: Record<string, unknown>; date: Date }[] = [];
-  for (const e of recurringEvents ?? []) {
-    for (const date of getRecurringOccurrences(e, now, 12)) {
-      recurringOccurrences.push({ event: e, date });
-    }
-  }
+  // One card per recurring event: show next occurrence date and "this week / next week"
+  const recurringFormatted = (recurringEvents ?? []).map((e) => {
+    const [thisWeek, nextWeek] = getRecurringOccurrences(e, now, 2);
+    const sortDate = thisWeek.getTime();
+    return {
+      sortDate,
+      formatted: formatEvent(
+        e,
+        false,
+        thisWeek,
+        formatShortDate(thisWeek),
+        nextWeek ? formatShortDate(nextWeek) : undefined,
+      ),
+    };
+  });
 
   const upcomingOneOff = (oneOffUpcoming ?? []).map((e) => ({
     sortDate: new Date(e.event_date as string).getTime(),
     formatted: formatEvent(e),
   }));
-  const upcomingRecurring = recurringOccurrences.map(({ event: e, date }) => ({
-    sortDate: date.getTime(),
-    formatted: formatEvent(e, false, date),
-  }));
-  const upcoming = [...upcomingOneOff, ...upcomingRecurring]
+  const upcoming = [...upcomingOneOff, ...recurringFormatted]
     .sort((a, b) => a.sortDate - b.sortDate)
     .map((x) => x.formatted);
 

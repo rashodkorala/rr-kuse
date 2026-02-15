@@ -191,7 +191,7 @@ export default function RobRoyContent({
                         >
                             <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">Drink Deals</h2>
                             <p className="text-xl text-gray-400 max-w-2xl mx-auto">
-                                Quality drinks at student-friendly prices
+                                Quality drinks at great prices
                             </p>
                         </motion.div>
 
@@ -402,10 +402,16 @@ export default function RobRoyContent({
                                 <p className="text-sm uppercase tracking-wider font-semibold">EST. 1977</p>
                             </div>
                             <p className="text-lg text-gray-300 mb-6 leading-relaxed">
-                                Named after the legendary Scottish folk hero, Rob Roy has been the heart of our local community since 1977. We&apos;re not just a pub – we&apos;re where friendships are forged, stories are shared, and memories are made.
+                                Welcome to The Rob Roy, St. John&apos;s oldest bar. Located at the heart of the iconic George Street in St. John&apos;s, Newfoundland and Labrador. This lively and energetic pub offers live local music, mixed in with sets from some of the city&apos;s top local DJs to keep the party going all night long.
+                            </p>
+                            <p className="text-lg text-gray-300 mb-6 leading-relaxed">
+                                From rock to country music to every genre in between, The Rob Roy has a little something for every music fan. Take advantage of some of the cheapest drink deals on George Street with our weekly events like Toonie Tuesday, Open Mic Wednesday, 345 Thursdays, and more.
+                            </p>
+                            <p className="text-lg text-gray-300 mb-6 leading-relaxed">
+                                Planning a private party or fundraiser? Rent out the Rob Roy &quot;Patio&quot; for the ultimate experience, complete with a private bar, beer pong tables, large projector screens and more.
                             </p>
                             <p className="text-lg text-gray-300 mb-8 leading-relaxed">
-                                With an extensive selection of craft beers, fine whisky, and the best live music in town, we&apos;re proud to be your home away from home. Whether you&apos;re a student looking for your new local or a regular seeking your usual spot, there&apos;s always a warm welcome waiting.
+                                The Rob Roy is your one-stop shop for the ultimate party on George Street. We Install and Service Hangovers.
                             </p>
 
                             <div className="grid sm:grid-cols-2 gap-6">
@@ -421,8 +427,8 @@ export default function RobRoyContent({
                                     <MapPin className="w-6 h-6 mt-1 text-orange-400" />
                                     <div>
                                         <h4 className="font-semibold mb-1 text-white">Find Us</h4>
-                                        <p className="text-gray-400 text-sm">123 High Street</p>
-                                        <p className="text-gray-400 text-sm">City Centre</p>
+                                        <p className="text-gray-400 text-sm">391 Duckworth St</p>
+                                        <p className="text-gray-400 text-sm">St. John&apos;s, NL A1C 1H7</p>
                                     </div>
                                 </div>
                             </div>
@@ -450,6 +456,31 @@ export default function RobRoyContent({
                 </div>
             </section>
 
+            {/* Contact */}
+            <section id="contact" className="scroll-mt-24 py-20 bg-zinc-950/80 border-t border-white/10 relative overflow-hidden">
+                <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_50%_50%,rgba(249,115,22,0.06),transparent_70%)]" aria-hidden />
+                <div className="px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto relative">
+                    <motion.div
+                        initial={{ opacity: 0, y: 10 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        className="text-center"
+                    >
+                        <h2 className="text-3xl md:text-4xl font-bold mb-8 tracking-tight text-white">CONTACT</h2>
+                        <div className="flex flex-col sm:flex-row items-center justify-center gap-6 sm:gap-12 text-white/90">
+                            <a href="mailto:hildacoffey@hotmail.com" className="hover:text-orange-400 transition-colors">
+                                <span className="text-white/60 text-sm tracking-wider">E /</span>{' '}
+                                hildacoffey@hotmail.com
+                            </a>
+                            <a href="tel:+17097396270" className="hover:text-orange-400 transition-colors">
+                                <span className="text-white/60 text-sm tracking-wider">T /</span>{' '}
+                                709-739-6270
+                            </a>
+                        </div>
+                    </motion.div>
+                </div>
+            </section>
+
             {/* Footer */}
             <footer className="bg-zinc-950 border-t border-white/10 text-white py-12">
                 <div className="px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
@@ -466,17 +497,23 @@ export default function RobRoyContent({
                             <a href="#" className="hover:text-orange-500 transition-colors">
                                 <Facebook className="w-6 h-6" />
                             </a>
-                            <a href="mailto:info@robroy.com" className="hover:text-orange-500 transition-colors">
+                            <a href="mailto:hildacoffey@hotmail.com" className="hover:text-orange-500 transition-colors">
                                 <Mail className="w-6 h-6" />
                             </a>
-                            <a href="tel:+441234567890" className="hover:text-orange-500 transition-colors">
+                            <a href="tel:+17097396270" className="hover:text-orange-500 transition-colors">
                                 <Phone className="w-6 h-6" />
                             </a>
                         </div>
 
-                        <p className="text-gray-500 text-sm text-center md:text-right">
-                            &copy; 2024 Rob Roy. Drink responsibly.
-                        </p>
+                        <div className="text-gray-500 text-sm text-center md:text-right space-y-1">
+                            <p>&copy; 2024 Rob Roy. Drink responsibly.</p>
+                            <p>
+                                Website by{' '}
+                                <a href="https://rashodkorala.com" target="_blank" rel="noopener noreferrer" className="text-orange-400 hover:text-orange-300 transition-colors underline underline-offset-2">
+                                    rashodkorala.com
+                                </a>
+                            </p>
+                        </div>
                     </div>
                 </div>
             </footer>

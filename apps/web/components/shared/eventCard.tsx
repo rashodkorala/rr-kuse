@@ -4,7 +4,6 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { Clock, Ticket } from 'lucide-react';
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import { getVenueStyles, type VenueVariant } from "@/lib/venue-styles";
 
 interface Event {
@@ -19,6 +18,10 @@ interface Event {
     isPast?: boolean;
     isSoldOut?: boolean;
     recurringLabel?: string;
+    /** For recurring: "Wed, Mar 5" (this week's date) */
+    recurringThisWeek?: string;
+    /** For recurring: "Wed, Mar 12" (next week's date) */
+    recurringNextWeek?: string;
 }
 
 interface EventCardProps {
@@ -77,9 +80,18 @@ export default function EventCard({ event, variant = 'robroy' }: EventCardProps)
                     {event.title}
                 </h3>
                 {event.recurringLabel && (
-                    <p className={`text-xs mb-2 ${styles.eventCard.metaText}`}>
-                        {event.recurringLabel}
-                    </p>
+                    <div className="mb-2">
+                        <p className={`text-xs ${styles.eventCard.metaText}`}>
+                            {event.recurringLabel}
+                        </p>
+                        {(event.recurringThisWeek || event.recurringNextWeek) && (
+                            <p className={`text-xs mt-1 ${styles.eventCard.metaText}`}>
+                                {event.recurringThisWeek && <span>This week: {event.recurringThisWeek}</span>}
+                                {event.recurringThisWeek && event.recurringNextWeek && " · "}
+                                {event.recurringNextWeek && <span>Next week: {event.recurringNextWeek}</span>}
+                            </p>
+                        )}
+                    </div>
                 )}
                 <p className={`text-sm mb-4 line-clamp-2 ${styles.eventCard.descriptionText}`}>
                     {event.description}
@@ -97,14 +109,6 @@ export default function EventCard({ event, variant = 'robroy' }: EventCardProps)
                         </div>
                     )}
                 </div>
-
-                {!event.isPast && (
-                    <Button
-                        className={`w-full ${styles.eventCard.ctaButton}`}
-                    >
-                        {event.isSoldOut ? 'Join Waitlist' : 'Get Tickets'}
-                    </Button>
-                )}
             </div>
         </motion.div>
     );
