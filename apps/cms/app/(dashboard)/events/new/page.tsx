@@ -40,15 +40,15 @@ export default async function NewEventPage() {
                 />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="event-date">
-                  Date & Time <span className="text-destructive">*</span>
-                </Label>
+                <Label htmlFor="event-date">Date & Time</Label>
                 <Input
                   id="event-date"
                   name="eventDate"
                   type="datetime-local"
-                  required
                 />
+                <p className="text-xs text-muted-foreground">
+                  Required for one-off events. For recurring (e.g. every Wednesday), leave empty and set Recurring day + Start/End time below.
+                </p>
               </div>
               <div className="space-y-2">
                 <Label htmlFor="event-status">Status</Label>
@@ -66,6 +66,7 @@ export default async function NewEventPage() {
               <div className="space-y-2">
                 <Label htmlFor="event-start">Start time</Label>
                 <Input id="event-start" name="startTime" placeholder="e.g., 9:00 PM" />
+                <p className="text-xs text-muted-foreground">Used for recurring events when no date is set.</p>
               </div>
               <div className="space-y-2">
                 <Label htmlFor="event-end">End time</Label>

@@ -69,16 +69,16 @@ export default async function EditEventPage({
                 />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="event-date">
-                  Date & Time <span className="text-destructive">*</span>
-                </Label>
+                <Label htmlFor="event-date">Date & Time</Label>
                 <Input
                   id="event-date"
                   name="eventDate"
                   type="datetime-local"
-                  defaultValue={toDateTimeLocal(eventDate(event.eventDate))}
-                  required
+                  defaultValue={event.eventDate != null ? toDateTimeLocal(eventDate(event.eventDate)) : ""}
                 />
+                <p className="text-xs text-muted-foreground">
+                  Required for one-off events. For recurring, leave empty and set Recurring day + Start/End time.
+                </p>
               </div>
               <div className="space-y-2">
                 <Label htmlFor="event-status">Status</Label>

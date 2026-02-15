@@ -47,7 +47,7 @@ export const events = pgTable(
     venueTag: text("venue_tag").default("both").notNull(),
     title: text("title").notNull(),
     description: text("description"),
-    eventDate: timestamp("event_date", { withTimezone: true }).notNull(),
+    eventDate: timestamp("event_date", { withTimezone: true }),
     startTime: text("start_time"),
     endTime: text("end_time"),
     performerId: uuid("performer_id").references(() => performers.id, { onDelete: "set null" }),

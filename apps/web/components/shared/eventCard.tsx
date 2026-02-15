@@ -18,6 +18,7 @@ interface Event {
     price?: string;
     isPast?: boolean;
     isSoldOut?: boolean;
+    recurringLabel?: string;
 }
 
 interface EventCardProps {
@@ -75,7 +76,11 @@ export default function EventCard({ event, variant = 'robroy' }: EventCardProps)
                 <h3 className="text-xl font-bold mb-2 text-white">
                     {event.title}
                 </h3>
-
+                {event.recurringLabel && (
+                    <p className={`text-xs mb-2 ${styles.eventCard.metaText}`}>
+                        {event.recurringLabel}
+                    </p>
+                )}
                 <p className={`text-sm mb-4 line-clamp-2 ${styles.eventCard.descriptionText}`}>
                     {event.description}
                 </p>

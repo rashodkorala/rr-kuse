@@ -191,10 +191,14 @@ export async function createEvent(formData: FormData) {
   const sb = await getRequiredSupabase();
   const venueTag = parseVenueTag(formData);
   const title = getText(formData, "title");
+  const recurringDay = getOptionalText(formData, "recurringDay");
   const eventDate = parseDateTime(formData, "eventDate");
 
-  if (!title || !eventDate) {
-    safeRedirect("error", "Title and event date are required.");
+  if (!title) {
+    safeRedirect("error", "Title is required.");
+  }
+  if (!recurringDay && !eventDate) {
+    safeRedirect("error", "Event date is required for one-off events. For recurring events, set Recurring day and Start/End time.");
   }
 
   const posterImageUrl = await resolveImageUrl(
@@ -204,22 +208,24 @@ export async function createEvent(formData: FormData) {
     "events",
   );
 
-  const { error } = await sb.from("events").insert(
-    objToSnake({
-      venueTag,
-      title,
-      description: getOptionalText(formData, "description"),
-      eventDate: eventDate!.toISOString(),
-      startTime: getOptionalText(formData, "startTime"),
-      endTime: getOptionalText(formData, "endTime"),
-      performerId: getOptionalText(formData, "performerId"),
-      eventType: getOptionalText(formData, "eventType"),
-      coverCharge: getOptionalText(formData, "coverCharge"),
-      posterImageUrl,
-      status: getOptionalText(formData, "status") ?? "published",
-      recurringDay: getOptionalText(formData, "recurringDay"),
-    }),
-  );
+  const payload: Record<string, unknown> = {
+    venueTag,
+    title,
+    description: getOptionalText(formData, "description"),
+    startTime: getOptionalText(formData, "startTime"),
+    endTime: getOptionalText(formData, "endTime"),
+    performerId: getOptionalText(formData, "performerId"),
+    eventType: getOptionalText(formData, "eventType"),
+    coverCharge: getOptionalText(formData, "coverCharge"),
+    posterImageUrl,
+    status: getOptionalText(formData, "status") ?? "published",
+    recurringDay,
+  };
+  if (eventDate) {
+    payload.eventDate = eventDate.toISOString();
+  }
+
+  const { error } = await sb.from("events").insert(objToSnake(payload));
   if (error) safeRedirect("error", error.message);
 
   revalidatePath("/");
@@ -240,9 +246,13 @@ export async function updateEvent(formData: FormData) {
   const id = getText(formData, "id");
   if (!id) redirectTo("/events", "error", "Missing event id.");
   const title = getText(formData, "title");
+  const recurringDay = getOptionalText(formData, "recurringDay");
   const eventDate = parseDateTime(formData, "eventDate");
-  if (!title || !eventDate) {
-    redirectTo("/events", "error", "Title and event date are required.");
+  if (!title) {
+    redirectTo("/events", "error", "Title is required.");
+  }
+  if (!recurringDay && !eventDate) {
+    redirectTo("/events", "error", "Event date is required for one-off events. For recurring, set Recurring day and Start/End time.");
   }
 
   let posterImageUrl = await resolveImageUrl(
@@ -257,25 +267,26 @@ export async function updateEvent(formData: FormData) {
     posterImageUrl = (data as { poster_image_url?: string } | null)?.poster_image_url ?? null;
   }
 
-  const { error } = await sb
-    .from("events")
-    .update(
-      objToSnake({
-        venueTag: parseVenueTag(formData),
-        title,
-        description: getOptionalText(formData, "description"),
-        eventDate: eventDate!.toISOString(),
-        startTime: getOptionalText(formData, "startTime"),
-        endTime: getOptionalText(formData, "endTime"),
-        performerId: getOptionalText(formData, "performerId"),
-        eventType: getOptionalText(formData, "eventType"),
-        coverCharge: getOptionalText(formData, "coverCharge"),
-        posterImageUrl,
-        status: getOptionalText(formData, "status") ?? "published",
-        recurringDay: getOptionalText(formData, "recurringDay"),
-      }),
-    )
-    .eq("id", id);
+  const payload: Record<string, unknown> = {
+    venueTag: parseVenueTag(formData),
+    title,
+    description: getOptionalText(formData, "description"),
+    startTime: getOptionalText(formData, "startTime"),
+    endTime: getOptionalText(formData, "endTime"),
+    performerId: getOptionalText(formData, "performerId"),
+    eventType: getOptionalText(formData, "eventType"),
+    coverCharge: getOptionalText(formData, "coverCharge"),
+    posterImageUrl,
+    status: getOptionalText(formData, "status") ?? "published",
+    recurringDay,
+  };
+  if (eventDate) {
+    payload.eventDate = eventDate.toISOString();
+  } else {
+    payload.eventDate = null;
+  }
+
+  const { error } = await sb.from("events").update(objToSnake(payload)).eq("id", id);
   if (error) redirectTo("/events", "error", error.message);
 
   revalidatePath("/");
