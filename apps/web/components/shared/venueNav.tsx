@@ -133,7 +133,7 @@ export default function VenueNav({ variant = 'robroy', activeSection = 'home' }:
 
                                 <Link
                                     href={createPageUrl(isRobRoy ? 'Konfusion' : 'RobRoy')}
-                                    className="flex items-center gap-2 text-white hover:opacity-80 transition-opacity"
+                                    className={`flex items-center gap-2 text-white transition-all duration-300 ${isRobRoy ? 'hover:text-purple-400' : 'hover:text-orange-400'}`}
                                 >
                                     {isRobRoy ? <Sparkles className="w-5 h-5" /> : <Beer className="w-5 h-5" />}
                                     {isRobRoy ? 'Visit Konfusion' : 'Visit Rob Roy'}

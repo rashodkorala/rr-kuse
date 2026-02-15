@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button";
 import { getVenueStyles, type VenueVariant } from "@/lib/venue-styles";
 
 interface Event {
-    id: number;
+    id: string | number;
     title: string;
     description: string;
     image: string;

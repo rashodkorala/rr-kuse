@@ -1,29 +1,52 @@
-# CMS (Sanity Studio)
+# CMS Dashboard (Next.js + Supabase)
 
-This app provides a marketing CMS for the website.
+This app is a custom CMS dashboard built with Next.js, Drizzle ORM, and Supabase Postgres.
 
 ## Environment
 
-Copy `.env.example` to `.env.local` and set values:
+Create `apps/cms/.env.local`:
 
 ```bash
-cp .env.example .env.local
+SUPABASE_DB_URL=postgres://...
+INSTAGRAM_BUSINESS_ACCOUNT_ID=...
+INSTAGRAM_ACCESS_TOKEN=...
 ```
-
-- `SANITY_STUDIO_PROJECT_ID`
-- `SANITY_STUDIO_DATASET`
 
 ## Scripts
 
 ```bash
 pnpm dev:cms
 pnpm build:cms
+pnpm --filter @rr-kuse/cms lint
+pnpm --filter @rr-kuse/cms db:generate
+pnpm --filter @rr-kuse/cms db:migrate
 ```
 
-## Included starter schemas
+## Schema + migrations
 
-- `siteSettings`
-- `marketingPage`
-- reusable objects: `ctaLink`, `highlightCard`
+- Drizzle schema: `apps/cms/lib/db/schema.ts`
+- Drizzle config: `apps/cms/drizzle.config.ts`
+- SQL migrations: `supabase/migrations`
 
-These are intentionally minimal and ready to be expanded with your detailed CMS design requirements.
+Apply migrations to your Supabase database before using the dashboard.
+
+## Managed CMS sections
+
+- Venue switcher (Rob Roy / Konfusion)
+- Venues
+- Performers (shared)
+- Events (venue-specific, recurring day support)
+- Drink deals (venue-specific)
+- Gallery images (venue-specific)
+- Videos (venue-specific)
+- Instagram feed (shared, with sync + visibility controls)
+- Blog posts (venue-specific or global)
+- Operating hours (venue-specific)
+- Special offerings (venue-specific)
+- Venue content (static key/value content)
+
+## Instagram sync
+
+- Manual sync from the dashboard button.
+- Optional API route for cron integrations:
+  - `POST /api/instagram/sync`

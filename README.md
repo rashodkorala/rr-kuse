@@ -3,7 +3,8 @@
 This repository is now a pnpm workspace monorepo with:
 
 - `apps/web` - Next.js marketing website
-- `apps/cms` - Sanity Studio CMS for marketing content
+- `apps/cms` - Next.js CMS dashboard backed by Supabase
+- `packages/ui` - shared shadcn-style UI components
 
 ## Prerequisites
 
@@ -36,4 +37,4 @@ pnpm build:cms
 - Accent themes are preserved:
   - Rob Roy => orange accent
   - Konfusion => purple accent
-- CMS is scaffolded for marketing content and can be expanded with your upcoming design/content model details.
+- CMS now manages venues, performers, events, deals, gallery/videos, Instagram feed, posts, hours, special offerings, and static venue content using Drizzle + Supabase.
