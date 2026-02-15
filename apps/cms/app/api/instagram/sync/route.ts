@@ -1,35 +1,40 @@
 import { NextResponse } from "next/server";
-import { instagramPosts } from "@/lib/db/schema";
-import { getDb } from "@/lib/db/client";
+import { getSupabase, getSupabaseConfigError, objToSnake } from "@/lib/db/supabase-data";
 import { fetchInstagramMedia } from "@/lib/instagram";
 
 export async function POST() {
-  const db = getDb();
-  if (!db) {
-    return NextResponse.json({ error: "Missing SUPABASE_DB_URL." }, { status: 500 });
+  if (getSupabaseConfigError()) {
+    return NextResponse.json(
+      { error: "Missing NEXT_PUBLIC_SUPABASE_URL or NEXT_PUBLIC_SUPABASE_ANON_KEY." },
+      { status: 500 },
+    );
+  }
+
+  const sb = await getSupabase();
+  if (!sb) {
+    return NextResponse.json({ error: "Supabase not configured." }, { status: 500 });
   }
 
   try {
     const media = await fetchInstagramMedia();
     for (const item of media) {
-      await db
-        .insert(instagramPosts)
-        .values({
+      const timestamp =
+        typeof item.timestamp === "string"
+          ? item.timestamp
+          : item.timestamp instanceof Date
+            ? item.timestamp.toISOString()
+            : new Date().toISOString();
+      const { error } = await sb.from("instagram_posts").upsert(
+        objToSnake({
           instagramId: item.instagramId,
           imageUrl: item.imageUrl,
           caption: item.caption,
           permalink: item.permalink,
-          timestamp: item.timestamp,
-        })
-        .onConflictDoUpdate({
-          target: instagramPosts.instagramId,
-          set: {
-            imageUrl: item.imageUrl,
-            caption: item.caption,
-            permalink: item.permalink,
-            timestamp: item.timestamp,
-          },
-        });
+          timestamp,
+        }) as Record<string, unknown>,
+        { onConflict: "instagram_id" },
+      );
+      if (error) throw error;
     }
 
     return NextResponse.json({ imported: media.length });

@@ -1,32 +1,12 @@
-import { asc, desc, eq } from "drizzle-orm";
-import { getDb } from "./db/client";
-import {
-  deals,
-  events,
-  galleryImages,
-  instagramPosts,
-  operatingHours,
-  performers,
-  posts,
-  specialOfferings,
-  venueContent,
-  videos,
-} from "./db/schema";
+import { getSupabase, getSupabaseConfigError, rowToCamel, rowsToCamel } from "./db/supabase-data";
 
-/* ------------------------------------------------------------------ */
-/*  Shared helper                                                      */
-/* ------------------------------------------------------------------ */
+const CONFIG_MSG =
+  "Missing NEXT_PUBLIC_SUPABASE_URL or NEXT_PUBLIC_SUPABASE_ANON_KEY. Add them to apps/cms/.env.local.";
 
-type DbResult =
-  | { db: NonNullable<ReturnType<typeof getDb>>; configError?: undefined }
-  | { db: null; configError: string };
-
-function getDbOrError(): DbResult {
-  const db = getDb();
-  if (!db) {
-    return { db: null, configError: "Missing DATABASE_URL. Add it to apps/cms/.env.local." };
-  }
-  return { db };
+async function getSb() {
+  const err = getSupabaseConfigError();
+  if (err) return null;
+  return getSupabase();
 }
 
 /* ------------------------------------------------------------------ */
@@ -34,29 +14,29 @@ function getDbOrError(): DbResult {
 /* ------------------------------------------------------------------ */
 
 export async function getDashboardOverview() {
-  const { db, configError } = getDbOrError();
-  if (!db) return { configError, counts: null };
+  const sb = await getSb();
+  if (!sb) return { configError: CONFIG_MSG, counts: null };
 
   try {
     const [perf, ev, dl, gal, vid, ig, po] = await Promise.all([
-      db.select().from(performers),
-      db.select().from(events),
-      db.select().from(deals),
-      db.select().from(galleryImages),
-      db.select().from(videos),
-      db.select().from(instagramPosts),
-      db.select().from(posts),
+      sb.from("performers").select("*", { count: "exact", head: true }),
+      sb.from("events").select("*", { count: "exact", head: true }),
+      sb.from("deals").select("*", { count: "exact", head: true }),
+      sb.from("gallery_images").select("*", { count: "exact", head: true }),
+      sb.from("videos").select("*", { count: "exact", head: true }),
+      sb.from("instagram_posts").select("*", { count: "exact", head: true }),
+      sb.from("posts").select("*", { count: "exact", head: true }),
     ]);
 
     return {
       counts: {
-        performers: perf.length,
-        events: ev.length,
-        deals: dl.length,
-        gallery: gal.length,
-        videos: vid.length,
-        instagram: ig.length,
-        posts: po.length,
+        performers: (perf as { count?: number }).count ?? 0,
+        events: (ev as { count?: number }).count ?? 0,
+        deals: (dl as { count?: number }).count ?? 0,
+        gallery: (gal as { count?: number }).count ?? 0,
+        videos: (vid as { count?: number }).count ?? 0,
+        instagram: (ig as { count?: number }).count ?? 0,
+        posts: (po as { count?: number }).count ?? 0,
       },
     };
   } catch (err) {
@@ -70,15 +50,17 @@ export async function getDashboardOverview() {
 /* ------------------------------------------------------------------ */
 
 export async function getPerformersData() {
-  const { db, configError } = getDbOrError();
-  if (!db) return { configError, performers: [] };
+  const sb = await getSb();
+  if (!sb) return { configError: CONFIG_MSG, performers: [] };
 
   try {
-    const rows = await db
-      .select()
-      .from(performers)
-      .orderBy(desc(performers.isFeatured), asc(performers.name));
-    return { performers: rows };
+    const { data, error } = await sb
+      .from("performers")
+      .select("*")
+      .order("is_featured", { ascending: false })
+      .order("name", { ascending: true });
+    if (error) throw error;
+    return { performers: rowsToCamel((data ?? []) as Record<string, unknown>[]) };
   } catch (err) {
     console.error("[getPerformersData]", err);
     return { dataError: "Failed to load performers.", performers: [] };
@@ -86,10 +68,11 @@ export async function getPerformersData() {
 }
 
 export async function getPerformerById(id: string) {
-  const { db } = getDbOrError();
-  if (!db) return null;
-  const [row] = await db.select().from(performers).where(eq(performers.id, id));
-  return row ?? null;
+  const sb = await getSb();
+  if (!sb) return null;
+  const { data, error } = await sb.from("performers").select("*").eq("id", id).single();
+  if (error || !data) return null;
+  return rowToCamel(data as Record<string, unknown>) as Record<string, unknown>;
 }
 
 /* ------------------------------------------------------------------ */
@@ -97,38 +80,30 @@ export async function getPerformerById(id: string) {
 /* ------------------------------------------------------------------ */
 
 export async function getEventsData() {
-  const { db, configError } = getDbOrError();
-  if (!db) return { configError, events: [], performers: [] };
+  const sb = await getSb();
+  if (!sb) return { configError: CONFIG_MSG, events: [], performers: [] };
 
   try {
-    const [eventRows, performerRows] = await Promise.all([
-      db
-        .select({
-          id: events.id,
-          venueTag: events.venueTag,
-          title: events.title,
-          description: events.description,
-          eventDate: events.eventDate,
-          startTime: events.startTime,
-          endTime: events.endTime,
-          performerId: events.performerId,
-          eventType: events.eventType,
-          coverCharge: events.coverCharge,
-          posterImageUrl: events.posterImageUrl,
-          status: events.status,
-          recurringDay: events.recurringDay,
-          performerName: performers.name,
-        })
-        .from(events)
-        .leftJoin(performers, eq(events.performerId, performers.id))
-        .orderBy(desc(events.eventDate))
+    const [eventsRes, performersRes] = await Promise.all([
+      sb
+        .from("events")
+        .select("*, performers(name)")
+        .order("event_date", { ascending: false })
         .limit(50),
-      db
-        .select()
-        .from(performers)
-        .orderBy(asc(performers.name)),
+      sb.from("performers").select("*").order("name", { ascending: true }),
     ]);
-    return { events: eventRows, performers: performerRows };
+    if (eventsRes.error) throw eventsRes.error;
+    if (performersRes.error) throw performersRes.error;
+
+    const eventRows = (eventsRes.data ?? []).map((e: Record<string, unknown>) => {
+      const performers = e.performers as { name?: string } | null;
+      const { performers: _, ...rest } = e;
+      return { ...rest, performer_name: performers?.name ?? null };
+    });
+    return {
+      events: rowsToCamel(eventRows) as Record<string, unknown>[],
+      performers: rowsToCamel((performersRes.data ?? []) as Record<string, unknown>[]),
+    };
   } catch (err) {
     console.error("[getEventsData]", err);
     return { dataError: "Failed to load events.", events: [], performers: [] };
@@ -136,10 +111,11 @@ export async function getEventsData() {
 }
 
 export async function getEventById(id: string) {
-  const { db } = getDbOrError();
-  if (!db) return null;
-  const [row] = await db.select().from(events).where(eq(events.id, id));
-  return row ?? null;
+  const sb = await getSb();
+  if (!sb) return null;
+  const { data, error } = await sb.from("events").select("*").eq("id", id).single();
+  if (error || !data) return null;
+  return rowToCamel(data as Record<string, unknown>) as Record<string, unknown>;
 }
 
 /* ------------------------------------------------------------------ */
@@ -147,16 +123,18 @@ export async function getEventById(id: string) {
 /* ------------------------------------------------------------------ */
 
 export async function getDealsData() {
-  const { db, configError } = getDbOrError();
-  if (!db) return { configError, deals: [] };
+  const sb = await getSb();
+  if (!sb) return { configError: CONFIG_MSG, deals: [] };
 
   try {
-    const rows = await db
-      .select()
-      .from(deals)
-      .orderBy(asc(deals.displayOrder), asc(deals.title))
+    const { data, error } = await sb
+      .from("deals")
+      .select("*")
+      .order("display_order", { ascending: true })
+      .order("title", { ascending: true })
       .limit(50);
-    return { deals: rows };
+    if (error) throw error;
+    return { deals: rowsToCamel((data ?? []) as Record<string, unknown>[]) };
   } catch (err) {
     console.error("[getDealsData]", err);
     return { dataError: "Failed to load deals.", deals: [] };
@@ -164,10 +142,11 @@ export async function getDealsData() {
 }
 
 export async function getDealById(id: string) {
-  const { db } = getDbOrError();
-  if (!db) return null;
-  const [row] = await db.select().from(deals).where(eq(deals.id, id));
-  return row ?? null;
+  const sb = await getSb();
+  if (!sb) return null;
+  const { data, error } = await sb.from("deals").select("*").eq("id", id).single();
+  if (error || !data) return null;
+  return rowToCamel(data as Record<string, unknown>) as Record<string, unknown>;
 }
 
 /* ------------------------------------------------------------------ */
@@ -175,23 +154,20 @@ export async function getDealById(id: string) {
 /* ------------------------------------------------------------------ */
 
 export async function getGalleryData() {
-  const { db, configError } = getDbOrError();
-  if (!db) return { configError, galleryImages: [], events: [] };
+  const sb = await getSb();
+  if (!sb) return { configError: CONFIG_MSG, galleryImages: [], events: [] };
 
   try {
-    const [galleryRows, eventRows] = await Promise.all([
-      db
-        .select()
-        .from(galleryImages)
-        .orderBy(asc(galleryImages.displayOrder))
-        .limit(50),
-      db
-        .select()
-        .from(events)
-        .orderBy(desc(events.eventDate))
-        .limit(50),
+    const [galleryRes, eventsRes] = await Promise.all([
+      sb.from("gallery_images").select("*").order("display_order", { ascending: true }).limit(50),
+      sb.from("events").select("*").order("event_date", { ascending: false }).limit(50),
     ]);
-    return { galleryImages: galleryRows, events: eventRows };
+    if (galleryRes.error) throw galleryRes.error;
+    if (eventsRes.error) throw eventsRes.error;
+    return {
+      galleryImages: rowsToCamel((galleryRes.data ?? []) as Record<string, unknown>[]),
+      events: rowsToCamel((eventsRes.data ?? []) as Record<string, unknown>[]),
+    };
   } catch (err) {
     console.error("[getGalleryData]", err);
     return { dataError: "Failed to load gallery.", galleryImages: [], events: [] };
@@ -203,38 +179,35 @@ export async function getGalleryData() {
 /* ------------------------------------------------------------------ */
 
 export async function getVideosData() {
-  const { db, configError } = getDbOrError();
-  if (!db) return { configError, videos: [], performers: [], events: [] };
+  const sb = await getSb();
+  if (!sb) return { configError: CONFIG_MSG, videos: [], performers: [], events: [] };
 
   try {
-    const [videoRows, performerRows, eventRows] = await Promise.all([
-      db
-        .select({
-          id: videos.id,
-          venueTag: videos.venueTag,
-          title: videos.title,
-          videoUrl: videos.videoUrl,
-          thumbnailUrl: videos.thumbnailUrl,
-          performerId: videos.performerId,
-          eventId: videos.eventId,
-          isFeatured: videos.isFeatured,
-          displayOrder: videos.displayOrder,
-          performerName: performers.name,
-          eventTitle: events.title,
-        })
-        .from(videos)
-        .leftJoin(performers, eq(videos.performerId, performers.id))
-        .leftJoin(events, eq(videos.eventId, events.id))
-        .orderBy(asc(videos.displayOrder))
+    const [videosRes, performersRes, eventsRes] = await Promise.all([
+      sb
+        .from("videos")
+        .select("*, performers(name), events(title)")
+        .order("display_order", { ascending: true })
         .limit(50),
-      db.select().from(performers).orderBy(asc(performers.name)),
-      db
-        .select()
-        .from(events)
-        .orderBy(desc(events.eventDate))
-        .limit(50),
+      sb.from("performers").select("*").order("name", { ascending: true }),
+      sb.from("events").select("*").order("event_date", { ascending: false }).limit(50),
     ]);
-    return { videos: videoRows, performers: performerRows, events: eventRows };
+    if (videosRes.error) throw videosRes.error;
+    if (performersRes.error) throw performersRes.error;
+    if (eventsRes.error) throw eventsRes.error;
+
+    const videoRows = (videosRes.data ?? []).map((v: Record<string, unknown>) => {
+      const performers = v.performers as { name?: string } | null;
+      const events = v.events as { title?: string } | null;
+      const { performers: _p, events: _e, ...rest } = v;
+      return { ...rest, performer_name: performers?.name ?? null, event_title: events?.title ?? null };
+    });
+
+    return {
+      videos: rowsToCamel(videoRows) as Record<string, unknown>[],
+      performers: rowsToCamel((performersRes.data ?? []) as Record<string, unknown>[]),
+      events: rowsToCamel((eventsRes.data ?? []) as Record<string, unknown>[]),
+    };
   } catch (err) {
     console.error("[getVideosData]", err);
     return { dataError: "Failed to load videos.", videos: [], performers: [], events: [] };
@@ -246,16 +219,18 @@ export async function getVideosData() {
 /* ------------------------------------------------------------------ */
 
 export async function getInstagramData() {
-  const { db, configError } = getDbOrError();
-  if (!db) return { configError, instagramPosts: [] };
+  const sb = await getSb();
+  if (!sb) return { configError: CONFIG_MSG, instagramPosts: [] };
 
   try {
-    const rows = await db
-      .select()
-      .from(instagramPosts)
-      .orderBy(asc(instagramPosts.displayOrder), desc(instagramPosts.timestamp))
+    const { data, error } = await sb
+      .from("instagram_posts")
+      .select("*")
+      .order("display_order", { ascending: true })
+      .order("timestamp", { ascending: false })
       .limit(100);
-    return { instagramPosts: rows };
+    if (error) throw error;
+    return { instagramPosts: rowsToCamel((data ?? []) as Record<string, unknown>[]) };
   } catch (err) {
     console.error("[getInstagramData]", err);
     return { dataError: "Failed to load Instagram posts.", instagramPosts: [] };
@@ -267,16 +242,17 @@ export async function getInstagramData() {
 /* ------------------------------------------------------------------ */
 
 export async function getPostsData() {
-  const { db, configError } = getDbOrError();
-  if (!db) return { configError, posts: [] };
+  const sb = await getSb();
+  if (!sb) return { configError: CONFIG_MSG, posts: [] };
 
   try {
-    const rows = await db
-      .select()
-      .from(posts)
-      .orderBy(desc(posts.publishedAt))
+    const { data, error } = await sb
+      .from("posts")
+      .select("*")
+      .order("published_at", { ascending: false })
       .limit(50);
-    return { posts: rows };
+    if (error) throw error;
+    return { posts: rowsToCamel((data ?? []) as Record<string, unknown>[]) };
   } catch (err) {
     console.error("[getPostsData]", err);
     return { dataError: "Failed to load posts.", posts: [] };
@@ -288,23 +264,28 @@ export async function getPostsData() {
 /* ------------------------------------------------------------------ */
 
 export async function getContentData() {
-  const { db, configError } = getDbOrError();
-  if (!db) return { configError, specialOfferings: [], venueContent: [] };
+  const sb = await getSb();
+  if (!sb) return { configError: CONFIG_MSG, specialOfferings: [], venueContent: [] };
 
   try {
-    const [offeringsRows, contentRows] = await Promise.all([
-      db
-        .select()
-        .from(specialOfferings)
-        .orderBy(asc(specialOfferings.displayOrder))
+    const [offeringsRes, contentRes] = await Promise.all([
+      sb
+        .from("special_offerings")
+        .select("*")
+        .order("display_order", { ascending: true })
         .limit(50),
-      db
-        .select()
-        .from(venueContent)
-        .orderBy(asc(venueContent.contentKey))
+      sb
+        .from("venue_content")
+        .select("*")
+        .order("content_key", { ascending: true })
         .limit(50),
     ]);
-    return { specialOfferings: offeringsRows, venueContent: contentRows };
+    if (offeringsRes.error) throw offeringsRes.error;
+    if (contentRes.error) throw contentRes.error;
+    return {
+      specialOfferings: rowsToCamel((offeringsRes.data ?? []) as Record<string, unknown>[]),
+      venueContent: rowsToCamel((contentRes.data ?? []) as Record<string, unknown>[]),
+    };
   } catch (err) {
     console.error("[getContentData]", err);
     return { dataError: "Failed to load content.", specialOfferings: [], venueContent: [] };
@@ -316,16 +297,17 @@ export async function getContentData() {
 /* ------------------------------------------------------------------ */
 
 export async function getSettingsData() {
-  const { db, configError } = getDbOrError();
-  if (!db) return { configError, operatingHours: [] };
+  const sb = await getSb();
+  if (!sb) return { configError: CONFIG_MSG, operatingHours: [] };
 
   try {
-    const rows = await db
-      .select()
-      .from(operatingHours)
-      .orderBy(asc(operatingHours.displayOrder))
+    const { data, error } = await sb
+      .from("operating_hours")
+      .select("*")
+      .order("display_order", { ascending: true })
       .limit(20);
-    return { operatingHours: rows };
+    if (error) throw error;
+    return { operatingHours: rowsToCamel((data ?? []) as Record<string, unknown>[]) };
   } catch (err) {
     console.error("[getSettingsData]", err);
     return { dataError: "Failed to load settings.", operatingHours: [] };
@@ -337,30 +319,30 @@ export async function getSettingsData() {
 /* ------------------------------------------------------------------ */
 
 export async function getAnalyticsData() {
-  const { db, configError } = getDbOrError();
-  if (!db) return { configError, counts: null };
+  const sb = await getSb();
+  if (!sb) return { configError: CONFIG_MSG, counts: null };
 
   try {
     const [ev, dl, gal, vid, po, hrs, off, vc] = await Promise.all([
-      db.select().from(events),
-      db.select().from(deals),
-      db.select().from(galleryImages),
-      db.select().from(videos),
-      db.select().from(posts),
-      db.select().from(operatingHours),
-      db.select().from(specialOfferings),
-      db.select().from(venueContent),
+      sb.from("events").select("*", { count: "exact", head: true }),
+      sb.from("deals").select("*", { count: "exact", head: true }),
+      sb.from("gallery_images").select("*", { count: "exact", head: true }),
+      sb.from("videos").select("*", { count: "exact", head: true }),
+      sb.from("posts").select("*", { count: "exact", head: true }),
+      sb.from("operating_hours").select("*", { count: "exact", head: true }),
+      sb.from("special_offerings").select("*", { count: "exact", head: true }),
+      sb.from("venue_content").select("*", { count: "exact", head: true }),
     ]);
     return {
       counts: {
-        events: ev.length,
-        deals: dl.length,
-        gallery: gal.length,
-        videos: vid.length,
-        posts: po.length,
-        operatingHours: hrs.length,
-        specialOfferings: off.length,
-        venueContent: vc.length,
+        events: (ev as { count?: number }).count ?? 0,
+        deals: (dl as { count?: number }).count ?? 0,
+        gallery: (gal as { count?: number }).count ?? 0,
+        videos: (vid as { count?: number }).count ?? 0,
+        posts: (po as { count?: number }).count ?? 0,
+        operatingHours: (hrs as { count?: number }).count ?? 0,
+        specialOfferings: (off as { count?: number }).count ?? 0,
+        venueContent: (vc as { count?: number }).count ?? 0,
       },
     };
   } catch (err) {
