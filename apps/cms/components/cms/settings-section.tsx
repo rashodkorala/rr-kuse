@@ -13,15 +13,12 @@ import {
   TableRow,
 } from "@rr-kuse/ui";
 import { createOperatingHour } from "@/app/actions";
-import type { operatingHours } from "@/lib/db/schema";
 import { VenueTagSelect } from "./shared-fields";
-
-type HoursRow = typeof operatingHours.$inferSelect;
 
 export function CmsSettingsSection({
   operatingHours,
 }: {
-  operatingHours: HoursRow[];
+  operatingHours: Record<string, unknown>[];
 }) {
   return (
     <section className="space-y-6">
@@ -57,16 +54,23 @@ export function CmsSettingsSection({
               </TableRow>
             </TableHeader>
             <TableBody>
-              {operatingHours.map((row) => (
-                <TableRow key={row.id}>
-                  <TableCell className="font-medium">{row.dayOfWeek}</TableCell>
-                  <TableCell>{row.openTime ?? "-"}</TableCell>
-                  <TableCell>{row.closeTime ?? "-"}</TableCell>
-                  <TableCell className="text-muted-foreground">
-                    {row.isClosed ? "Closed" : "Open"}
-                  </TableCell>
-                </TableRow>
-              ))}
+              {operatingHours.map((row) => {
+                const id = String(row.id ?? "");
+                const dayOfWeek = typeof row.dayOfWeek === "string" ? row.dayOfWeek : "";
+                const openTime = typeof row.openTime === "string" ? row.openTime : null;
+                const closeTime = typeof row.closeTime === "string" ? row.closeTime : null;
+                const isClosed = row.isClosed === true;
+                return (
+                  <TableRow key={id}>
+                    <TableCell className="font-medium">{dayOfWeek}</TableCell>
+                    <TableCell>{openTime ?? "-"}</TableCell>
+                    <TableCell>{closeTime ?? "-"}</TableCell>
+                    <TableCell className="text-muted-foreground">
+                      {isClosed ? "Closed" : "Open"}
+                    </TableCell>
+                  </TableRow>
+                );
+              })}
             </TableBody>
           </Table>
         </div>

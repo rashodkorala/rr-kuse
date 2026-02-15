@@ -2,27 +2,14 @@ import { Button, Card, CardContent, CardHeader, CardTitle, Input } from "@rr-kus
 import { createVideo } from "@/app/actions";
 import { FileField, VenueTagSelect } from "./shared-fields";
 
-type VideoRow = {
-  id: string;
-  title: string;
-  videoUrl: string;
-  thumbnailUrl: string | null;
-  performerName: string | null;
-  eventTitle: string | null;
-  isFeatured: boolean | null;
-  [key: string]: unknown;
-};
-
-type EventRow = { id: string; title: string; [key: string]: unknown };
-
 export function CmsVideosSection({
   videos,
   events,
   performers,
 }: {
-  videos: VideoRow[];
-  events: EventRow[];
-  performers: Array<{ id: string; name: string }>;
+  videos: Record<string, unknown>[];
+  events: Record<string, unknown>[];
+  performers: Record<string, unknown>[];
 }) {
   return (
     <section className="space-y-6">
@@ -48,9 +35,9 @@ export function CmsVideosSection({
               className="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm"
             >
               <option value="">No performer link</option>
-              {performers.map((performer) => (
-                <option key={performer.id} value={performer.id}>
-                  {performer.name}
+              {performers.map((p) => (
+                <option key={String(p.id ?? "")} value={String(p.id ?? "")}>
+                  {typeof p.name === "string" ? p.name : ""}
                 </option>
               ))}
             </select>
@@ -61,8 +48,8 @@ export function CmsVideosSection({
             >
               <option value="">No event link</option>
               {events.map((event) => (
-                <option key={event.id} value={event.id}>
-                  {event.title}
+                <option key={String(event.id ?? "")} value={String(event.id ?? "")}>
+                  {typeof event.title === "string" ? event.title : ""}
                 </option>
               ))}
             </select>

@@ -28,7 +28,13 @@ export default async function EditEventPage({
   ]);
   if (!event) redirect("/events?error=Event+not+found.");
 
-  const performers = data.performers ?? [];
+  const performers = (data.performers ?? []) as Record<string, unknown>[];
+  const s = (v: unknown) => (typeof v === "string" ? v : "");
+  const eventDate = (v: unknown): Date => {
+    if (v instanceof Date) return v;
+    if (typeof v === "string") return new Date(v);
+    return new Date();
+  };
 
   return (
     <PageShell title="Edit Event">
@@ -42,13 +48,13 @@ export default async function EditEventPage({
         </Link>
 
         <form action={updateEvent} className="space-y-8">
-          <input type="hidden" name="id" value={event.id} />
+          <input type="hidden" name="id" value={String(event.id ?? "")} />
           <div>
             <h4 className="text-sm font-medium mb-4">Basic Information</h4>
             <div className="grid gap-4 sm:grid-cols-2">
               <div className="sm:col-span-2">
                 <Label className="mb-2 block">Venue</Label>
-                <VenueTagSelect defaultValue={event.venueTag ?? "both"} />
+                <VenueTagSelect defaultValue={typeof event.venueTag === "string" ? event.venueTag : "both"} />
               </div>
               <div className="sm:col-span-2 space-y-2">
                 <Label htmlFor="event-title">
@@ -58,7 +64,7 @@ export default async function EditEventPage({
                   id="event-title"
                   name="title"
                   placeholder="e.g., Live Jazz Night"
-                  defaultValue={event.title}
+                  defaultValue={s(event.title)}
                   required
                 />
               </div>
@@ -70,7 +76,7 @@ export default async function EditEventPage({
                   id="event-date"
                   name="eventDate"
                   type="datetime-local"
-                  defaultValue={toDateTimeLocal(new Date(event.eventDate))}
+                  defaultValue={toDateTimeLocal(eventDate(event.eventDate))}
                   required
                 />
               </div>
@@ -80,7 +86,7 @@ export default async function EditEventPage({
                   id="event-status"
                   name="status"
                   className="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm"
-                  defaultValue={event.status ?? "published"}
+                  defaultValue={s(event.status) || "published"}
                 >
                   <option value="draft">Draft</option>
                   <option value="published">Published</option>
@@ -93,7 +99,7 @@ export default async function EditEventPage({
                   id="event-start"
                   name="startTime"
                   placeholder="e.g., 9:00 PM"
-                  defaultValue={event.startTime ?? ""}
+                  defaultValue={s(event.startTime)}
                 />
               </div>
               <div className="space-y-2">
@@ -102,7 +108,7 @@ export default async function EditEventPage({
                   id="event-end"
                   name="endTime"
                   placeholder="e.g., 1:00 AM"
-                  defaultValue={event.endTime ?? ""}
+                  defaultValue={s(event.endTime)}
                 />
               </div>
               <div className="space-y-2">
@@ -111,12 +117,12 @@ export default async function EditEventPage({
                   id="event-performer"
                   name="performerId"
                   className="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm"
-                  defaultValue={event.performerId ?? ""}
+                  defaultValue={s(event.performerId)}
                 >
                   <option value="">No featured performer</option>
                   {performers.map((p) => (
-                    <option key={p.id} value={p.id}>
-                      {p.name}
+                    <option key={String(p.id ?? "")} value={String(p.id ?? "")}>
+                      {typeof p.name === "string" ? p.name : ""}
                     </option>
                   ))}
                 </select>
@@ -127,7 +133,7 @@ export default async function EditEventPage({
                   id="event-type"
                   name="eventType"
                   className="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm"
-                  defaultValue={event.eventType ?? ""}
+                  defaultValue={s(event.eventType)}
                 >
                   <option value="">Select type</option>
                   <option value="live_music">Live Music</option>
@@ -141,7 +147,7 @@ export default async function EditEventPage({
                   id="event-cover"
                   name="coverCharge"
                   placeholder="e.g., $10 or Free"
-                  defaultValue={event.coverCharge ?? ""}
+                  defaultValue={s(event.coverCharge)}
                 />
               </div>
               <div className="sm:col-span-2 space-y-2">
@@ -150,7 +156,7 @@ export default async function EditEventPage({
                   id="event-recurring"
                   name="recurringDay"
                   className="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm"
-                  defaultValue={event.recurringDay ?? ""}
+                  defaultValue={s(event.recurringDay)}
                 >
                   <option value="">Not recurring</option>
                   <option value="Monday">Monday</option>
@@ -175,7 +181,7 @@ export default async function EditEventPage({
                   name="description"
                   placeholder="Describe the event, what to expect..."
                   rows={4}
-                  defaultValue={event.description ?? ""}
+                  defaultValue={s(event.description)}
                 />
               </div>
               <FileField id="event-poster-file" name="posterImageFile" label="Poster Image" />
@@ -186,7 +192,7 @@ export default async function EditEventPage({
                   name="posterImageUrl"
                   type="url"
                   placeholder="https://..."
-                  defaultValue={event.posterImageUrl ?? ""}
+                  defaultValue={s(event.posterImageUrl)}
                 />
               </div>
             </div>

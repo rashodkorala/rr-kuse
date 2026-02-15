@@ -80,9 +80,9 @@ export default async function NewEventPage() {
                   defaultValue=""
                 >
                   <option value="">No featured performer</option>
-                  {data.performers.map((p) => (
-                    <option key={p.id} value={p.id}>
-                      {p.name}
+                  {data.performers.map((p: Record<string, unknown>) => (
+                    <option key={String(p.id ?? "")} value={String(p.id ?? "")}>
+                      {typeof p.name === "string" ? p.name : ""}
                     </option>
                   ))}
                 </select>

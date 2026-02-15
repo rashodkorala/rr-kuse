@@ -13,24 +13,11 @@ import { Calendar, Plus, RefreshCw } from "lucide-react";
 import { deleteEvent } from "@/app/actions";
 import { RowActions } from "./row-actions";
 
-type EventRow = {
-  id: string;
-  title: string;
-  description: string | null;
-  eventDate: Date;
-  status: string | null;
-  performerName: string | null;
-  startTime?: string | null;
-  endTime?: string | null;
-  coverCharge?: string | null;
-  posterImageUrl?: string | null;
-};
-
 export function CmsEventsSection({
   events,
 }: {
-  events: EventRow[];
-  performers?: Array<{ id: string; name: string }>;
+  events: Record<string, unknown>[];
+  performers?: Record<string, unknown>[];
 }) {
   return (
     <section className="space-y-6">
@@ -83,50 +70,53 @@ export function CmsEventsSection({
               </TableRow>
             </TableHeader>
             <TableBody>
-              {events.map((event) => (
-                <TableRow key={event.id}>
-                  <TableCell>
-                    <div className="flex items-center gap-2">
-                      <Calendar className="h-4 w-4 shrink-0 text-muted-foreground" />
-                      <div>
-                        <p className="font-medium">{event.title}</p>
-                        <p className="text-xs text-muted-foreground line-clamp-1 max-w-[280px]">
-                          {event.description ?? "-"}
-                        </p>
+              {events.map((event) => {
+                const id = String(event.id ?? "");
+                const title = typeof event.title === "string" ? event.title : "";
+                const description = typeof event.description === "string" ? event.description : null;
+                const eventDate = event.eventDate != null ? new Date(event.eventDate as string | Date) : null;
+                const status = typeof event.status === "string" ? event.status : "published";
+                return (
+                  <TableRow key={id}>
+                    <TableCell>
+                      <div className="flex items-center gap-2">
+                        <Calendar className="h-4 w-4 shrink-0 text-muted-foreground" />
+                        <div>
+                          <p className="font-medium">{title}</p>
+                          <p className="text-xs text-muted-foreground line-clamp-1 max-w-[280px]">
+                            {description ?? "-"}
+                          </p>
+                        </div>
                       </div>
-                    </div>
-                  </TableCell>
-                  <TableCell>
-                    {event.eventDate
-                      ? new Date(event.eventDate).toLocaleDateString()
-                      : "-"}
-                  </TableCell>
-                  <TableCell>
-                    <Badge
-                      variant={event.status === "published" ? "default" : "secondary"}
-                    >
-                      {event.status ?? "published"}
-                    </Badge>
-                  </TableCell>
-                  <TableCell>
-                    <RowActions
-                      type="event"
-                      editHref={`/events/${event.id}/edit`}
-                      deleteAction={deleteEvent}
-                      id={event.id}
-                      previewData={{
-                        title: event.title,
-                        description: event.description,
-                        eventDate: event.eventDate,
-                        startTime: event.startTime ?? null,
-                        endTime: event.endTime ?? null,
-                        coverCharge: event.coverCharge ?? null,
-                        posterImageUrl: event.posterImageUrl ?? null,
-                      }}
-                    />
-                  </TableCell>
-                </TableRow>
-              ))}
+                    </TableCell>
+                    <TableCell>
+                      {eventDate ? eventDate.toLocaleDateString() : "-"}
+                    </TableCell>
+                    <TableCell>
+                      <Badge variant={status === "published" ? "default" : "secondary"}>
+                        {status}
+                      </Badge>
+                    </TableCell>
+                    <TableCell>
+                      <RowActions
+                        type="event"
+                        editHref={`/events/${id}/edit`}
+                        deleteAction={deleteEvent}
+                        id={id}
+                        previewData={{
+                          title,
+                          description,
+                          eventDate: eventDate ?? new Date(),
+                          startTime: typeof event.startTime === "string" ? event.startTime : null,
+                          endTime: typeof event.endTime === "string" ? event.endTime : null,
+                          coverCharge: typeof event.coverCharge === "string" ? event.coverCharge : null,
+                          posterImageUrl: typeof event.posterImageUrl === "string" ? event.posterImageUrl : null,
+                        }}
+                      />
+                    </TableCell>
+                  </TableRow>
+                );
+              })}
             </TableBody>
           </Table>
         </div>

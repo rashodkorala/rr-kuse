@@ -16,6 +16,9 @@ export default async function EditDealPage({
   const deal = await getDealById(id);
   if (!deal) redirect("/deals?error=Deal+not+found.");
 
+  const s = (v: unknown) => (typeof v === "string" ? v : "");
+  const n = (v: unknown) => (typeof v === "number" && !Number.isNaN(v) ? v : 0);
+
   return (
     <PageShell title="Edit Deal">
       <div className="max-w-2xl space-y-6">
@@ -28,13 +31,13 @@ export default async function EditDealPage({
         </Link>
 
         <form action={updateDeal} className="space-y-8">
-          <input type="hidden" name="id" value={deal.id} />
+          <input type="hidden" name="id" value={String(deal.id ?? "")} />
           <div>
             <h4 className="text-sm font-medium mb-4">Basic Information</h4>
             <div className="grid gap-4 sm:grid-cols-2">
               <div className="sm:col-span-2">
                 <Label className="mb-2 block">Venue</Label>
-                <VenueTagSelect defaultValue={deal.venueTag ?? "both"} />
+                <VenueTagSelect defaultValue={typeof deal.venueTag === "string" ? deal.venueTag : "both"} />
               </div>
               <div className="sm:col-span-2 space-y-2">
                 <Label htmlFor="deal-title">
@@ -44,7 +47,7 @@ export default async function EditDealPage({
                   id="deal-title"
                   name="title"
                   placeholder="e.g., $5 Draft Beer Tuesdays"
-                  defaultValue={deal.title}
+                  defaultValue={s(deal.title)}
                   required
                 />
               </div>
@@ -54,7 +57,7 @@ export default async function EditDealPage({
                   id="deal-day"
                   name="dayOfWeek"
                   className="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm"
-                  defaultValue={deal.dayOfWeek ?? ""}
+                  defaultValue={s(deal.dayOfWeek)}
                 >
                   <option value="">Daily</option>
                   <option value="Monday">Monday</option>
@@ -72,7 +75,7 @@ export default async function EditDealPage({
                   id="deal-order"
                   name="displayOrder"
                   type="number"
-                  defaultValue={deal.displayOrder ?? 0}
+                  defaultValue={n(deal.displayOrder)}
                 />
               </div>
               <div className="space-y-2">
@@ -81,7 +84,7 @@ export default async function EditDealPage({
                   id="deal-start"
                   name="startTime"
                   placeholder="e.g., 5:00 PM"
-                  defaultValue={deal.startTime ?? ""}
+                  defaultValue={s(deal.startTime)}
                 />
               </div>
               <div className="space-y-2">
@@ -90,7 +93,7 @@ export default async function EditDealPage({
                   id="deal-end"
                   name="endTime"
                   placeholder="e.g., 10:00 PM"
-                  defaultValue={deal.endTime ?? ""}
+                  defaultValue={s(deal.endTime)}
                 />
               </div>
               <div className="sm:col-span-2 flex items-center gap-2">
@@ -98,7 +101,7 @@ export default async function EditDealPage({
                   id="deal-active"
                   name="isActive"
                   type="checkbox"
-                  defaultChecked={deal.isActive ?? true}
+                  defaultChecked={deal.isActive !== false && deal.isActive !== 0 && deal.isActive !== ""}
                   className="rounded"
                 />
                 <Label htmlFor="deal-active" className="font-normal cursor-pointer">
@@ -120,7 +123,7 @@ export default async function EditDealPage({
                   name="description"
                   placeholder="Describe the deal, what's included..."
                   rows={4}
-                  defaultValue={deal.description}
+                  defaultValue={s(deal.description)}
                   required
                 />
               </div>
@@ -132,7 +135,7 @@ export default async function EditDealPage({
                   name="imageUrl"
                   type="url"
                   placeholder="https://..."
-                  defaultValue={deal.imageUrl ?? ""}
+                  defaultValue={s(deal.imageUrl)}
                 />
               </div>
             </div>

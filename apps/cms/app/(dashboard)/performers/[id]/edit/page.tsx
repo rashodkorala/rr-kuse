@@ -16,6 +16,8 @@ export default async function EditPerformerPage({
   const p = await getPerformerById(id);
   if (!p) redirect("/performers?error=Performer+not+found.");
 
+  const s = (v: unknown) => (typeof v === "string" ? v : "");
+
   return (
     <PageShell title="Edit Performer">
       <div className="max-w-2xl space-y-6">
@@ -28,7 +30,7 @@ export default async function EditPerformerPage({
         </Link>
 
         <form action={updatePerformer} className="space-y-8">
-          <input type="hidden" name="id" value={p.id} />
+          <input type="hidden" name="id" value={String(p.id ?? "")} />
           <div>
             <h4 className="text-sm font-medium mb-4">Basic Information</h4>
             <div className="grid gap-4 sm:grid-cols-2">
@@ -40,7 +42,7 @@ export default async function EditPerformerPage({
                   id="performer-name"
                   name="name"
                   placeholder="e.g., DJ Nova"
-                  defaultValue={p.name}
+                  defaultValue={s(p.name)}
                   required
                 />
               </div>
@@ -50,7 +52,7 @@ export default async function EditPerformerPage({
                   id="performer-type"
                   name="performerType"
                   className="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm"
-                  defaultValue={p.performerType}
+                  defaultValue={s(p.performerType)}
                 >
                   <option value="dj">DJ</option>
                   <option value="band">Band</option>
@@ -63,7 +65,7 @@ export default async function EditPerformerPage({
                   id="performer-venue-tag"
                   name="venueTag"
                   className="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm"
-                  defaultValue={p.venueTag ?? "both"}
+                  defaultValue={s(p.venueTag) || "both"}
                 >
                   <option value="both">Both Venues</option>
                   <option value="rob_roy">Rob Roy Only</option>
@@ -79,7 +81,7 @@ export default async function EditPerformerPage({
                     type="checkbox"
                     name="isFeatured"
                     className="rounded"
-                    defaultChecked={p.isFeatured ?? false}
+                    defaultChecked={p.isFeatured === true}
                   />
                   Featured performer
                 </label>
@@ -88,7 +90,7 @@ export default async function EditPerformerPage({
                     type="checkbox"
                     name="isAlumni"
                     className="rounded"
-                    defaultChecked={p.isAlumni ?? false}
+                    defaultChecked={p.isAlumni === true}
                   />
                   Alumni
                 </label>
@@ -108,7 +110,7 @@ export default async function EditPerformerPage({
                   name="bio"
                   placeholder="Describe the performer's style, background, and what to expect..."
                   rows={4}
-                  defaultValue={p.bio ?? ""}
+                  defaultValue={s(p.bio)}
                   required
                 />
               </div>
@@ -118,7 +120,7 @@ export default async function EditPerformerPage({
                   id="performer-genre"
                   name="genre"
                   placeholder="e.g., House, Indie Rock"
-                  defaultValue={p.genre ?? ""}
+                  defaultValue={s(p.genre)}
                 />
               </div>
             </div>
@@ -139,7 +141,7 @@ export default async function EditPerformerPage({
                   name="profileImageUrl"
                   type="url"
                   placeholder="https://..."
-                  defaultValue={p.profileImageUrl ?? ""}
+                  defaultValue={s(p.profileImageUrl)}
                 />
               </div>
               <div className="space-y-2">
@@ -148,7 +150,7 @@ export default async function EditPerformerPage({
                   id="performer-instagram"
                   name="instagramHandle"
                   placeholder="@username"
-                  defaultValue={p.instagramHandle ?? ""}
+                  defaultValue={s(p.instagramHandle)}
                 />
               </div>
               <div className="space-y-2">
@@ -158,7 +160,7 @@ export default async function EditPerformerPage({
                   name="spotifyUrl"
                   type="url"
                   placeholder="https://open.spotify.com/..."
-                  defaultValue={p.spotifyUrl ?? ""}
+                  defaultValue={s(p.spotifyUrl)}
                 />
               </div>
               <div className="space-y-2">
@@ -168,7 +170,7 @@ export default async function EditPerformerPage({
                   name="soundcloudUrl"
                   type="url"
                   placeholder="https://soundcloud.com/..."
-                  defaultValue={p.soundcloudUrl ?? ""}
+                  defaultValue={s(p.soundcloudUrl)}
                 />
               </div>
             </div>

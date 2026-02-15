@@ -10,12 +10,9 @@ import {
 } from "@rr-kuse/ui";
 import { Instagram, RefreshCw } from "lucide-react";
 import { syncInstagramPosts, toggleInstagramVisibility } from "@/app/actions";
-import type { instagramPosts } from "@/lib/db/schema";
 import { ActionsDropdown } from "./actions-dropdown";
 
-type InstagramRow = typeof instagramPosts.$inferSelect;
-
-export function CmsInstagramSection({ instagramPosts }: { instagramPosts: InstagramRow[] }) {
+export function CmsInstagramSection({ instagramPosts }: { instagramPosts: Record<string, unknown>[] }) {
   return (
     <section className="space-y-6">
       <div className="rounded-lg border border-border bg-card p-4">
@@ -51,38 +48,47 @@ export function CmsInstagramSection({ instagramPosts }: { instagramPosts: Instag
             </TableRow>
           </TableHeader>
           <TableBody>
-            {instagramPosts.map((item) => (
-              <TableRow key={item.id}>
-                <TableCell className="max-w-[340px] truncate">
-                  {item.caption ?? "-"}
-                </TableCell>
-                <TableCell className="text-muted-foreground">
-                  {new Date(item.timestamp).toLocaleDateString()}
-                </TableCell>
-                <TableCell>
-                  <form action={toggleInstagramVisibility} className="inline">
-                    <input type="hidden" name="id" value={item.id} />
-                    <input type="hidden" name="isVisible" value={item.isVisible ? "false" : "true"} />
-                    <input type="hidden" name="venueTag" value={item.venueTag ?? ""} />
-                    <input type="hidden" name="displayOrder" value={item.displayOrder ?? 0} />
-                    <Badge variant={item.isVisible ? "default" : "secondary"}>
-                      {item.isVisible ? "Visible" : "Hidden"}
-                    </Badge>
-                    <Button type="submit" variant="ghost" size="sm" className="ml-1 h-6 px-1">
-                      Toggle
-                    </Button>
-                  </form>
-                </TableCell>
-                <TableCell>
-                  <div className="flex items-center gap-2">
-                    <a href={item.permalink} target="_blank" rel="noreferrer" className="text-sm text-primary hover:underline">
-                      View
-                    </a>
-                    <ActionsDropdown />
-                  </div>
-                </TableCell>
-              </TableRow>
-            ))}
+            {instagramPosts.map((item) => {
+              const id = String(item.id ?? "");
+              const caption = typeof item.caption === "string" ? item.caption : null;
+              const timestamp = item.timestamp != null ? new Date(item.timestamp as string | Date) : new Date();
+              const isVisible = item.isVisible !== false && item.isVisible !== 0;
+              const venueTag = typeof item.venueTag === "string" ? item.venueTag : "";
+              const displayOrder = typeof item.displayOrder === "number" ? item.displayOrder : 0;
+              const permalink = typeof item.permalink === "string" ? item.permalink : "#";
+              return (
+                <TableRow key={id}>
+                  <TableCell className="max-w-[340px] truncate">
+                    {caption ?? "-"}
+                  </TableCell>
+                  <TableCell className="text-muted-foreground">
+                    {timestamp.toLocaleDateString()}
+                  </TableCell>
+                  <TableCell>
+                    <form action={toggleInstagramVisibility} className="inline">
+                      <input type="hidden" name="id" value={id} />
+                      <input type="hidden" name="isVisible" value={isVisible ? "false" : "true"} />
+                      <input type="hidden" name="venueTag" value={venueTag} />
+                      <input type="hidden" name="displayOrder" value={String(displayOrder)} />
+                      <Badge variant={isVisible ? "default" : "secondary"}>
+                        {isVisible ? "Visible" : "Hidden"}
+                      </Badge>
+                      <Button type="submit" variant="ghost" size="sm" className="ml-1 h-6 px-1">
+                        Toggle
+                      </Button>
+                    </form>
+                  </TableCell>
+                  <TableCell>
+                    <div className="flex items-center gap-2">
+                      <a href={permalink} target="_blank" rel="noreferrer" className="text-sm text-primary hover:underline">
+                        View
+                      </a>
+                      <ActionsDropdown />
+                    </div>
+                  </TableCell>
+                </TableRow>
+              );
+            })}
           </TableBody>
         </Table>
       </div>

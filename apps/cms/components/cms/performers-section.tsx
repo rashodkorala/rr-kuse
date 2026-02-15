@@ -10,11 +10,10 @@ import {
   TableRow,
 } from "@rr-kuse/ui";
 import { FolderOpen, Plus, RefreshCw, Star, Users } from "lucide-react";
-import type { Performer } from "@/lib/db/schema";
 import { deletePerformer } from "@/app/actions";
 import { RowActions } from "./row-actions";
 
-export function CmsPerformersSection({ performers }: { performers: Performer[] }) {
+export function CmsPerformersSection({ performers }: { performers: Record<string, unknown>[] }) {
   return (
     <section className="space-y-6">
       <div className="rounded-lg border border-border bg-card p-4">
@@ -69,47 +68,55 @@ export function CmsPerformersSection({ performers }: { performers: Performer[] }
               </TableRow>
             </TableHeader>
             <TableBody>
-              {performers.map((performer) => (
-                <TableRow key={performer.id}>
-                  <TableCell>
-                    <div className="flex items-center gap-2">
-                      <FolderOpen className="h-4 w-4 shrink-0 text-muted-foreground" />
-                      <div>
-                        <p className="font-medium">{performer.name}</p>
-                        <p className="text-xs text-muted-foreground line-clamp-1 max-w-[320px]">
-                          {performer.bio ?? "-"}
-                        </p>
+              {performers.map((performer) => {
+                const id = String(performer.id ?? "");
+                const name = typeof performer.name === "string" ? performer.name : "";
+                const bio = typeof performer.bio === "string" ? performer.bio : null;
+                const performerType = typeof performer.performerType === "string" ? performer.performerType : "";
+                const venueTag = typeof performer.venueTag === "string" ? performer.venueTag : "both";
+                const isFeatured = performer.isFeatured === true;
+                return (
+                  <TableRow key={id}>
+                    <TableCell>
+                      <div className="flex items-center gap-2">
+                        <FolderOpen className="h-4 w-4 shrink-0 text-muted-foreground" />
+                        <div>
+                          <p className="font-medium">{name}</p>
+                          <p className="text-xs text-muted-foreground line-clamp-1 max-w-[320px]">
+                            {bio ?? "-"}
+                          </p>
+                        </div>
                       </div>
-                    </div>
-                  </TableCell>
-                  <TableCell>{performer.performerType}</TableCell>
-                  <TableCell>
-                    <Badge variant="secondary">{performer.venueTag ?? "both"}</Badge>
-                  </TableCell>
-                  <TableCell>
-                    {performer.isFeatured ? (
-                      <Star className="h-4 w-4 fill-amber-400 text-amber-400" />
-                    ) : (
-                      <span className="text-muted-foreground">-</span>
-                    )}
-                  </TableCell>
-                  <TableCell>
-                    <RowActions
-                      type="performer"
-                      editHref={`/performers/${performer.id}/edit`}
-                      deleteAction={deletePerformer}
-                      id={performer.id}
+                    </TableCell>
+                    <TableCell>{performerType}</TableCell>
+                    <TableCell>
+                      <Badge variant="secondary">{venueTag}</Badge>
+                    </TableCell>
+                    <TableCell>
+                      {isFeatured ? (
+                        <Star className="h-4 w-4 fill-amber-400 text-amber-400" />
+                      ) : (
+                        <span className="text-muted-foreground">-</span>
+                      )}
+                    </TableCell>
+                    <TableCell>
+                      <RowActions
+                        type="performer"
+                        editHref={`/performers/${id}/edit`}
+                        deleteAction={deletePerformer}
+                      id={id}
                       previewData={{
-                        name: performer.name,
-                        performerType: performer.performerType,
-                        genre: performer.genre,
-                        bio: performer.bio,
-                        profileImageUrl: performer.profileImageUrl,
+                        name,
+                        performerType,
+                        genre: typeof performer.genre === "string" ? performer.genre : null,
+                        bio,
+                        profileImageUrl: typeof performer.profileImageUrl === "string" ? performer.profileImageUrl : null,
                       }}
                     />
                   </TableCell>
                 </TableRow>
-              ))}
+                );
+              })}
             </TableBody>
           </Table>
         </div>

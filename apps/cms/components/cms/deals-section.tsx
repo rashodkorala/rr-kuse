@@ -10,16 +10,13 @@ import {
   TableRow,
 } from "@rr-kuse/ui";
 import { Plus, RefreshCw, Wine } from "lucide-react";
-import type { deals } from "@/lib/db/schema";
 import { deleteDeal } from "@/app/actions";
 import { RowActions } from "./row-actions";
-
-type DealRow = typeof deals.$inferSelect;
 
 export function CmsDealsSection({
   deals,
 }: {
-  deals: DealRow[];
+  deals: Record<string, unknown>[];
 }) {
   return (
     <section className="space-y-6">
@@ -72,38 +69,44 @@ export function CmsDealsSection({
               </TableRow>
             </TableHeader>
             <TableBody>
-              {deals.map((deal) => (
-                <TableRow key={deal.id}>
-                  <TableCell>
-                    <div className="flex items-center gap-2">
-                      <Wine className="h-4 w-4 shrink-0 text-muted-foreground" />
-                      <p className="font-medium">{deal.title}</p>
-                    </div>
-                  </TableCell>
-                  <TableCell className="max-w-[280px] truncate text-muted-foreground">
-                    {deal.description ?? "-"}
-                  </TableCell>
-                  <TableCell>
-                    <Badge variant={deal.isActive ? "default" : "secondary"}>
-                      {deal.isActive ? "Active" : "Inactive"}
-                    </Badge>
-                  </TableCell>
-                  <TableCell>
-                    <RowActions
-                      type="deal"
-                      editHref={`/deals/${deal.id}/edit`}
-                      deleteAction={deleteDeal}
-                      id={deal.id}
-                      previewData={{
-                        title: deal.title,
-                        description: deal.description,
-                        dayOfWeek: deal.dayOfWeek,
-                        imageUrl: deal.imageUrl,
-                      }}
-                    />
-                  </TableCell>
-                </TableRow>
-              ))}
+              {deals.map((deal) => {
+                const id = String(deal.id ?? "");
+                const title = typeof deal.title === "string" ? deal.title : "";
+                const description = typeof deal.description === "string" ? deal.description : null;
+                const isActive = deal.isActive === true || (deal.isActive !== false && deal.isActive !== 0);
+                return (
+                  <TableRow key={id}>
+                    <TableCell>
+                      <div className="flex items-center gap-2">
+                        <Wine className="h-4 w-4 shrink-0 text-muted-foreground" />
+                        <p className="font-medium">{title}</p>
+                      </div>
+                    </TableCell>
+                    <TableCell className="max-w-[280px] truncate text-muted-foreground">
+                      {description ?? "-"}
+                    </TableCell>
+                    <TableCell>
+                      <Badge variant={isActive ? "default" : "secondary"}>
+                        {isActive ? "Active" : "Inactive"}
+                      </Badge>
+                    </TableCell>
+                    <TableCell>
+                      <RowActions
+                        type="deal"
+                        editHref={`/deals/${id}/edit`}
+                        deleteAction={deleteDeal}
+                        id={id}
+                        previewData={{
+                          title,
+                          description: description ?? "",
+                          dayOfWeek: typeof deal.dayOfWeek === "string" ? deal.dayOfWeek : null,
+                          imageUrl: typeof deal.imageUrl === "string" ? deal.imageUrl : null,
+                        }}
+                      />
+                    </TableCell>
+                  </TableRow>
+                );
+              })}
             </TableBody>
           </Table>
         </div>

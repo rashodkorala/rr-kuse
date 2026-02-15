@@ -29,8 +29,8 @@ export function CmsMediaSection({
             >
               <option value="">No event link</option>
               {dashboard.events.map((event) => (
-                <option key={event.id} value={event.id}>
-                  {event.title}
+                <option key={String(event.id ?? "")} value={String(event.id ?? "")}>
+                  {typeof event.title === "string" ? event.title : ""}
                 </option>
               ))}
             </select>
@@ -75,8 +75,8 @@ export function CmsMediaSection({
             >
               <option value="">No event link</option>
               {dashboard.events.map((event) => (
-                <option key={event.id} value={event.id}>
-                  {event.title}
+                <option key={String(event.id ?? "")} value={String(event.id ?? "")}>
+                  {typeof event.title === "string" ? event.title : ""}
                 </option>
               ))}
             </select>

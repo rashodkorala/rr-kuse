@@ -1,17 +1,13 @@
 import { Button, Card, CardContent, CardHeader, CardTitle, Input } from "@rr-kuse/ui";
 import { createGalleryImage } from "@/app/actions";
-import type { galleryImages } from "@/lib/db/schema";
 import { FileField, VenueTagSelect } from "./shared-fields";
-
-type GalleryRow = typeof galleryImages.$inferSelect;
-type EventRow = { id: string; title: string; [key: string]: unknown };
 
 export function CmsGallerySection({
   galleryImages,
   events,
 }: {
-  galleryImages: GalleryRow[];
-  events: EventRow[];
+  galleryImages: Record<string, unknown>[];
+  events: Record<string, unknown>[];
 }) {
   return (
     <section className="space-y-6">
@@ -37,8 +33,8 @@ export function CmsGallerySection({
             >
               <option value="">No event link</option>
               {events.map((event) => (
-                <option key={event.id} value={event.id}>
-                  {event.title}
+                <option key={String(event.id ?? "")} value={String(event.id ?? "")}>
+                  {typeof event.title === "string" ? event.title : ""}
                 </option>
               ))}
             </select>
@@ -55,21 +51,26 @@ export function CmsGallerySection({
 
       {galleryImages.length > 0 && (
         <div className="grid gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-          {galleryImages.map((img) => (
-            <div key={img.id} className="group relative overflow-hidden rounded-lg border border-border bg-card">
-              {img.imageUrl && (
-                // eslint-disable-next-line @next/next/no-img-element
-                <img
-                  src={img.imageUrl}
-                  alt={img.caption ?? "Gallery image"}
-                  className="aspect-square w-full object-cover"
-                />
-              )}
-              <div className="p-2">
-                <p className="text-xs text-muted-foreground truncate">{img.caption ?? "No caption"}</p>
+          {galleryImages.map((img) => {
+            const id = String(img.id ?? "");
+            const imageUrl = typeof img.imageUrl === "string" ? img.imageUrl : "";
+            const caption = typeof img.caption === "string" ? img.caption : "Gallery image";
+            return (
+              <div key={id} className="group relative overflow-hidden rounded-lg border border-border bg-card">
+                {imageUrl && (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img
+                    src={imageUrl}
+                    alt={caption}
+                    className="aspect-square w-full object-cover"
+                  />
+                )}
+                <div className="p-2">
+                  <p className="text-xs text-muted-foreground truncate">{caption || "No caption"}</p>
+                </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       )}
     </section>

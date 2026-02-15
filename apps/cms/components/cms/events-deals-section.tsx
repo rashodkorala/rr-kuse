@@ -65,40 +65,39 @@ export function CmsEventsDealsSection({
               </TableRow>
             </TableHeader>
             <TableBody>
-              {dashboard.events.map((event) => (
-                <TableRow key={event.id}>
-                  <TableCell>
-                    <div className="flex items-center gap-2">
-                      <FolderOpen className="h-4 w-4 shrink-0 text-muted-foreground" />
-                      <div>
-                        <p className="font-medium">{event.title}</p>
-                        <p className="text-xs text-muted-foreground line-clamp-1 max-w-[280px]">
-                          {event.description ?? "-"}
-                        </p>
+              {dashboard.events.map((event) => {
+                const id = String(event.id ?? "");
+                const title = typeof event.title === "string" ? event.title : "";
+                const description = typeof event.description === "string" ? event.description : null;
+                const eventDate = event.eventDate != null ? new Date(event.eventDate as string | Date) : null;
+                const status = typeof event.status === "string" ? event.status : "published";
+                return (
+                  <TableRow key={id}>
+                    <TableCell>
+                      <div className="flex items-center gap-2">
+                        <FolderOpen className="h-4 w-4 shrink-0 text-muted-foreground" />
+                        <div>
+                          <p className="font-medium">{title}</p>
+                          <p className="text-xs text-muted-foreground line-clamp-1 max-w-[280px]">
+                            {description ?? "-"}
+                          </p>
+                        </div>
                       </div>
-                    </div>
-                  </TableCell>
-                  <TableCell>
-                    {event.eventDate
-                      ? new Date(event.eventDate).toLocaleDateString()
-                      : "-"}
-                  </TableCell>
-                  <TableCell>
-                    <Badge
-                      variant={
-                        event.status === "published"
-                          ? "default"
-                          : "secondary"
-                      }
-                    >
-                      {event.status ?? "published"}
-                    </Badge>
-                  </TableCell>
-                  <TableCell>
-                    <ActionsDropdown />
-                  </TableCell>
-                </TableRow>
-              ))}
+                    </TableCell>
+                    <TableCell>
+                      {eventDate ? eventDate.toLocaleDateString() : "-"}
+                    </TableCell>
+                    <TableCell>
+                      <Badge variant={status === "published" ? "default" : "secondary"}>
+                        {status}
+                      </Badge>
+                    </TableCell>
+                    <TableCell>
+                      <ActionsDropdown />
+                    </TableCell>
+                  </TableRow>
+                );
+              })}
             </TableBody>
           </Table>
         </div>
@@ -132,27 +131,33 @@ export function CmsEventsDealsSection({
               </TableRow>
             </TableHeader>
             <TableBody>
-              {dashboard.deals.map((deal) => (
-                <TableRow key={deal.id}>
-                  <TableCell>
-                    <div className="flex items-center gap-2">
-                      <Wine className="h-4 w-4 shrink-0 text-muted-foreground" />
-                      <p className="font-medium">{deal.title}</p>
-                    </div>
-                  </TableCell>
-                  <TableCell className="max-w-[280px] truncate text-muted-foreground">
-                    {deal.description ?? "-"}
-                  </TableCell>
-                  <TableCell>
-                    <Badge variant={deal.isActive ? "default" : "secondary"}>
-                      {deal.isActive ? "Active" : "Inactive"}
-                    </Badge>
-                  </TableCell>
-                  <TableCell>
-                    <ActionsDropdown />
-                  </TableCell>
-                </TableRow>
-              ))}
+              {dashboard.deals.map((deal) => {
+                const id = String(deal.id ?? "");
+                const title = typeof deal.title === "string" ? deal.title : "";
+                const description = typeof deal.description === "string" ? deal.description : null;
+                const isActive = deal.isActive === true || (deal.isActive !== false && deal.isActive !== 0);
+                return (
+                  <TableRow key={id}>
+                    <TableCell>
+                      <div className="flex items-center gap-2">
+                        <Wine className="h-4 w-4 shrink-0 text-muted-foreground" />
+                        <p className="font-medium">{title}</p>
+                      </div>
+                    </TableCell>
+                    <TableCell className="max-w-[280px] truncate text-muted-foreground">
+                      {description ?? "-"}
+                    </TableCell>
+                    <TableCell>
+                      <Badge variant={isActive ? "default" : "secondary"}>
+                        {isActive ? "Active" : "Inactive"}
+                      </Badge>
+                    </TableCell>
+                    <TableCell>
+                      <ActionsDropdown />
+                    </TableCell>
+                  </TableRow>
+                );
+              })}
             </TableBody>
           </Table>
         </div>

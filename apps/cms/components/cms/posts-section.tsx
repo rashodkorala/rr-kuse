@@ -24,21 +24,10 @@ const VENUE_TAG_LABELS: Record<string, string> = {
   both: "Both Venues",
 };
 
-type PostRow = {
-  id: string;
-  title: string;
-  content: string;
-  excerpt: string | null;
-  imageUrl: string | null;
-  isPublished: boolean | null;
-  publishedAt: Date | null;
-  venueTag: string;
-};
-
 export function CmsPostsSection({
   posts,
 }: {
-  posts: PostRow[];
+  posts: Record<string, unknown>[];
 }) {
   return (
     <section className="space-y-6">
@@ -80,29 +69,34 @@ export function CmsPostsSection({
             </TableRow>
           </TableHeader>
           <TableBody>
-            {posts.map((post) => (
-              <TableRow key={post.id}>
-                <TableCell>
-                  <div className="flex items-center gap-2">
-                    <FileText className="h-4 w-4 shrink-0 text-muted-foreground" />
-                    <p className="font-medium">{post.title}</p>
-                  </div>
-                </TableCell>
-                <TableCell className="text-muted-foreground">
-                  {VENUE_TAG_LABELS[post.venueTag] ?? post.venueTag}
-                </TableCell>
-                <TableCell>
-                  <Badge variant={post.isPublished ? "default" : "secondary"}>
-                    {post.isPublished ? "Published" : "Draft"}
-                  </Badge>
-                </TableCell>
-                <TableCell className="text-muted-foreground">
-                  {post.publishedAt
-                    ? new Date(post.publishedAt).toLocaleDateString()
-                    : "-"}
-                </TableCell>
-              </TableRow>
-            ))}
+            {posts.map((post) => {
+              const id = String(post.id ?? "");
+              const title = typeof post.title === "string" ? post.title : "";
+              const venueTag = typeof post.venueTag === "string" ? post.venueTag : "";
+              const isPublished = post.isPublished === true;
+              const publishedAt = post.publishedAt != null ? new Date(post.publishedAt as string | Date) : null;
+              return (
+                <TableRow key={id}>
+                  <TableCell>
+                    <div className="flex items-center gap-2">
+                      <FileText className="h-4 w-4 shrink-0 text-muted-foreground" />
+                      <p className="font-medium">{title}</p>
+                    </div>
+                  </TableCell>
+                  <TableCell className="text-muted-foreground">
+                    {VENUE_TAG_LABELS[venueTag] ?? venueTag}
+                  </TableCell>
+                  <TableCell>
+                    <Badge variant={isPublished ? "default" : "secondary"}>
+                      {isPublished ? "Published" : "Draft"}
+                    </Badge>
+                  </TableCell>
+                  <TableCell className="text-muted-foreground">
+                    {publishedAt ? publishedAt.toLocaleDateString() : "-"}
+                  </TableCell>
+                </TableRow>
+              );
+            })}
           </TableBody>
         </Table>
       </div>
