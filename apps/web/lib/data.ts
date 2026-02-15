@@ -1,6 +1,10 @@
-import { supabase } from "./supabase";
+import { getSupabase } from "./supabase";
 
 type VenueTag = "rob_roy" | "konfusion";
+
+function emptyEvents() {
+  return { upcoming: [] as ReturnType<typeof formatEvent>[], past: [] as ReturnType<typeof formatEvent>[] };
+}
 
 // ────────────────────────────────────────────
 // Events
@@ -35,6 +39,9 @@ function formatEvent(
 }
 
 export async function getEvents(venueTag: VenueTag) {
+  const supabase = getSupabase();
+  if (!supabase) return emptyEvents();
+
   const now = new Date().toISOString();
 
   const { data: upcoming } = await supabase
@@ -65,6 +72,9 @@ export async function getEvents(venueTag: VenueTag) {
 // ────────────────────────────────────────────
 
 export async function getPerformers(venueTag: VenueTag) {
+  const supabase = getSupabase();
+  if (!supabase) return [];
+
   const { data } = await supabase
     .from("performers")
     .select("*")
@@ -94,6 +104,9 @@ export async function getPerformers(venueTag: VenueTag) {
 // ────────────────────────────────────────────
 
 export async function getDeals(venueTag: VenueTag) {
+  const supabase = getSupabase();
+  if (!supabase) return [];
+
   const { data } = await supabase
     .from("deals")
     .select("*")
@@ -119,6 +132,9 @@ export async function getDeals(venueTag: VenueTag) {
 // ────────────────────────────────────────────
 
 export async function getGalleryImages(venueTag: VenueTag) {
+  const supabase = getSupabase();
+  if (!supabase) return [];
+
   const { data } = await supabase
     .from("gallery_images")
     .select("*")
