@@ -1,4 +1,4 @@
-# RR Kuse Monorepo
+# Rob Roy & Konfusion Monorepo
 
 This repository is now a pnpm workspace monorepo with:
 

@@ -58,7 +58,7 @@ export function AppSidebar({
           <SidebarMenuItem>
             <SidebarMenuButton size="lg" asChild>
               <a href="/">
-                <span className="truncate text-lg font-bold">RR Kuse</span>
+                <span className="truncate text-lg font-bold">Rob Roy & Konfusion</span>
               </a>
             </SidebarMenuButton>
           </SidebarMenuItem>

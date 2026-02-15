@@ -4,7 +4,7 @@ import RobRoyContent from '@/components/venues/robroy-content';
 export const revalidate = 60; // revalidate data every 60 seconds
 
 export default async function RobRoyPage() {
-    const { events, performers, deals, gallery } = await getVenueData('rob_roy');
+    const { events, performers, deals, gallery, instagramPosts } = await getVenueData('rob_roy');
 
     return (
         <RobRoyContent
@@ -13,6 +13,7 @@ export default async function RobRoyPage() {
             performers={performers}
             deals={deals}
             gallery={gallery}
+            instagramPosts={instagramPosts}
         />
     );
 }

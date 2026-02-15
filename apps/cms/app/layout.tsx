@@ -14,7 +14,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "RR Kuse CMS",
+  title: "Rob Roy & Konfusion CMS",
   description: "Dashboard CMS backed by Supabase",
 };
 

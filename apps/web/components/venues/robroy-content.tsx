@@ -11,6 +11,7 @@ import PerformerCard, { type Performer } from '@/components/shared/performerCard
 import PhotoGallery from '@/components/shared/photoGallery';
 import DrinkDealsSection, { type DrinkDeal } from '@/components/shared/drinkDealsSection';
 import EmptyState from '@/components/shared/emptyState';
+import InstagramFeed, { type InstagramPost } from '@/components/shared/instagramFeed';
 import Image from 'next/image';
 
 interface EventItem {
@@ -37,6 +38,7 @@ interface RobRoyContentProps {
     performers: Performer[];
     deals: DrinkDeal[];
     gallery: GalleryPhoto[];
+    instagramPosts: InstagramPost[];
 }
 
 export default function RobRoyContent({
@@ -45,11 +47,13 @@ export default function RobRoyContent({
     performers,
     deals,
     gallery,
+    instagramPosts,
 }: RobRoyContentProps) {
     const hasEvents = upcomingEvents.length > 0 || pastEvents.length > 0;
     const hasPerformers = performers.length > 0;
     const hasDeals = deals.length > 0;
     const hasGallery = gallery.length > 0;
+    const hasInstagram = instagramPosts.length > 0;
 
     return (
         <div className="min-h-screen bg-black">
@@ -116,6 +120,13 @@ export default function RobRoyContent({
                     </div>
                 </motion.div>
             </section>
+
+            {/* What's Happening Right Now - Instagram Feed */}
+            {hasInstagram && (
+                <section className="bg-zinc-950">
+                    <InstagramFeed posts={instagramPosts} variant="robroy" />
+                </section>
+            )}
 
             {/* Events Section */}
             <section id="events" className="scroll-mt-24 py-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto bg-zinc-950">

@@ -204,12 +204,14 @@ export async function getPerformers(venueTag: VenueTag) {
       : (p.performer_type as "dj" | "band"),
     genre: (p.genre as string) ?? "",
     image: (p.profile_image_url as string) ?? "",
+    summary: (p.summary as string) ?? undefined,
     bio: (p.bio as string) ?? undefined,
     instagram: p.instagram_handle
       ? `https://instagram.com/${(p.instagram_handle as string).replace("@", "")}`
       : undefined,
     spotify: (p.spotify_url as string) ?? undefined,
     soundcloud: (p.soundcloud_url as string) ?? undefined,
+    website: (p.website_url as string) ?? undefined,
   }));
 }
 
@@ -242,6 +244,31 @@ export async function getDeals(venueTag: VenueTag) {
 }
 
 // ────────────────────────────────────────────
+// Instagram
+// ────────────────────────────────────────────
+
+export async function getInstagramPosts(venueTag: VenueTag) {
+  const supabase = getSupabase();
+  if (!supabase) return [];
+
+  const { data } = await supabase
+    .from("instagram_posts")
+    .select("id, image_url, caption, permalink, timestamp")
+    .eq("is_visible", true)
+    .or(`venue_tag.eq.${venueTag},venue_tag.eq.both,venue_tag.is.null`)
+    .order("timestamp", { ascending: false })
+    .limit(6);
+
+  return (data ?? []).map((p) => ({
+    id: p.id as string,
+    imageUrl: (p.image_url as string) ?? "",
+    caption: (p.caption as string) ?? undefined,
+    permalink: (p.permalink as string) ?? "",
+    timestamp: p.timestamp as string,
+  }));
+}
+
+// ────────────────────────────────────────────
 // Gallery
 // ────────────────────────────────────────────
 
@@ -266,12 +293,13 @@ export async function getGalleryImages(venueTag: VenueTag) {
 // ────────────────────────────────────────────
 
 export async function getVenueData(venueTag: VenueTag) {
-  const [events, performers, deals, gallery] = await Promise.all([
+  const [events, performers, deals, gallery, instagramPosts] = await Promise.all([
     getEvents(venueTag),
     getPerformers(venueTag),
     getDeals(venueTag),
     getGalleryImages(venueTag),
+    getInstagramPosts(venueTag),
   ]);
 
-  return { events, performers, deals, gallery };
+  return { events, performers, deals, gallery, instagramPosts };
 }

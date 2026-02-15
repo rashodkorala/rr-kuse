@@ -27,7 +27,7 @@ export default async function LoginPage({
           <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-lg bg-primary text-primary-foreground">
             <span className="text-lg font-bold">RK</span>
           </div>
-          <h1 className="text-2xl font-semibold tracking-tight">RR Kuse CMS</h1>
+          <h1 className="text-2xl font-semibold tracking-tight">Rob Roy & Konfusion CMS</h1>
           <p className="text-sm text-muted-foreground">
             Sign in to manage your venues
           </p>

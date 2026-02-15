@@ -99,6 +99,14 @@ export function PerformerFormModal() {
           <h4 className="text-sm font-medium mb-4">Content</h4>
           <div className="space-y-4">
             <div className="space-y-2">
+              <Label htmlFor="performer-summary">Summary</Label>
+              <Input
+                id="performer-summary"
+                name="summary"
+                placeholder="Short line for the card. Full bio in popup."
+              />
+            </div>
+            <div className="space-y-2">
               <Label htmlFor="performer-bio">
                 Bio <span className="text-destructive">*</span>
               </Label>
@@ -162,6 +170,15 @@ export function PerformerFormModal() {
                 name="soundcloudUrl"
                 type="url"
                 placeholder="https://soundcloud.com/..."
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="performer-website">Website URL</Label>
+              <Input
+                id="performer-website"
+                name="websiteUrl"
+                type="url"
+                placeholder="https://..."
               />
             </div>
           </div>

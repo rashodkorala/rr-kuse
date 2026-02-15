@@ -11,6 +11,7 @@ import PerformerCard, { type Performer } from '@/components/shared/performerCard
 import PhotoGallery from '@/components/shared/photoGallery';
 import DrinkDealsSection, { type DrinkDeal } from '@/components/shared/drinkDealsSection';
 import EmptyState from '@/components/shared/emptyState';
+import InstagramFeed, { type InstagramPost } from '@/components/shared/instagramFeed';
 
 type ParticleData = {
     left: string;
@@ -50,6 +51,7 @@ interface KonfusionContentProps {
     performers: Performer[];
     deals: DrinkDeal[];
     gallery: GalleryPhoto[];
+    instagramPosts: InstagramPost[];
 }
 
 export default function KonfusionContent({
@@ -58,6 +60,7 @@ export default function KonfusionContent({
     performers,
     deals,
     gallery,
+    instagramPosts,
 }: KonfusionContentProps) {
     const [particleData] = useState<ParticleData[]>(() => generateParticleData());
 
@@ -65,6 +68,7 @@ export default function KonfusionContent({
     const hasPerformers = performers.length > 0;
     const hasDeals = deals.length > 0;
     const hasGallery = gallery.length > 0;
+    const hasInstagram = instagramPosts.length > 0;
 
     return (
         <div className="min-h-screen bg-black text-white">
@@ -161,6 +165,13 @@ export default function KonfusionContent({
                     </div>
                 </motion.div>
             </section>
+
+            {/* What's Happening Right Now - Instagram Feed */}
+            {hasInstagram && (
+                <section className="bg-zinc-950">
+                    <InstagramFeed posts={instagramPosts} variant="konfusion" />
+                </section>
+            )}
 
             {/* Events Section */}
             <section id="events" className="scroll-mt-24 py-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">

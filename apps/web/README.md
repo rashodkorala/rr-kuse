@@ -1,6 +1,6 @@
 # Web App
 
-Next.js marketing website for RR Kuse.
+Next.js marketing website for Rob Roy & Konfusion.
 
 ## Run from monorepo root
 

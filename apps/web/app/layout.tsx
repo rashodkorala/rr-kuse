@@ -13,7 +13,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "RR Kuse Venues",
+  title: "Rob Roy & Konfusion",
   description: "Marketing site for Rob Roy and Konfusion venues",
 };
 

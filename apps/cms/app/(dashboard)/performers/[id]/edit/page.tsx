@@ -102,6 +102,15 @@ export default async function EditPerformerPage({
             <h4 className="text-sm font-medium mb-4">Content</h4>
             <div className="space-y-4">
               <div className="space-y-2">
+                <Label htmlFor="performer-summary">Summary</Label>
+                <Input
+                  id="performer-summary"
+                  name="summary"
+                  placeholder="Short line for the card. Full bio opens in popup."
+                  defaultValue={s(p.summary)}
+                />
+              </div>
+              <div className="space-y-2">
                 <Label htmlFor="performer-bio">
                   Bio <span className="text-destructive">*</span>
                 </Label>
@@ -163,18 +172,28 @@ export default async function EditPerformerPage({
                   defaultValue={s(p.spotifyUrl)}
                 />
               </div>
-              <div className="space-y-2">
-                <Label htmlFor="performer-soundcloud">SoundCloud URL</Label>
-                <Input
-                  id="performer-soundcloud"
-                  name="soundcloudUrl"
-                  type="url"
-                  placeholder="https://soundcloud.com/..."
-                  defaultValue={s(p.soundcloudUrl)}
-                />
+                <div className="space-y-2">
+                  <Label htmlFor="performer-soundcloud">SoundCloud URL</Label>
+                  <Input
+                    id="performer-soundcloud"
+                    name="soundcloudUrl"
+                    type="url"
+                    placeholder="https://soundcloud.com/..."
+                    defaultValue={s(p.soundcloudUrl)}
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="performer-website">Website URL</Label>
+                  <Input
+                    id="performer-website"
+                    name="websiteUrl"
+                    type="url"
+                    placeholder="https://..."
+                    defaultValue={s(p.websiteUrl)}
+                  />
+                </div>
               </div>
             </div>
-          </div>
 
           <div className="flex items-center gap-3 pt-4 border-t border-border">
             <Button type="submit">Update Performer</Button>

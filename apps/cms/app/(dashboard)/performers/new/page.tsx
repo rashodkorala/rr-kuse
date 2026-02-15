@@ -78,6 +78,17 @@ export default function NewPerformerPage() {
             <h4 className="text-sm font-medium mb-4">Content</h4>
             <div className="space-y-4">
               <div className="space-y-2">
+                <Label htmlFor="performer-summary">Summary</Label>
+                <Input
+                  id="performer-summary"
+                  name="summary"
+                  placeholder="Short line for the card (e.g. House & techno DJ). Full bio opens in popup."
+                />
+                <p className="text-xs text-muted-foreground">
+                  Shown on the performer card. Keep it brief; full bio is in the popup.
+                </p>
+              </div>
+              <div className="space-y-2">
                 <Label htmlFor="performer-bio">
                   Bio <span className="text-destructive">*</span>
                 </Label>
@@ -88,6 +99,9 @@ export default function NewPerformerPage() {
                   rows={4}
                   required
                 />
+                <p className="text-xs text-muted-foreground">
+                  Full bio is shown when visitors click the performer card.
+                </p>
               </div>
               <div className="space-y-2">
                 <Label htmlFor="performer-genre">Genre</Label>
@@ -134,17 +148,26 @@ export default function NewPerformerPage() {
                   placeholder="https://open.spotify.com/..."
                 />
               </div>
-              <div className="space-y-2">
-                <Label htmlFor="performer-soundcloud">SoundCloud URL</Label>
-                <Input
-                  id="performer-soundcloud"
-                  name="soundcloudUrl"
-                  type="url"
-                  placeholder="https://soundcloud.com/..."
-                />
+                <div className="space-y-2">
+                  <Label htmlFor="performer-soundcloud">SoundCloud URL</Label>
+                  <Input
+                    id="performer-soundcloud"
+                    name="soundcloudUrl"
+                    type="url"
+                    placeholder="https://soundcloud.com/..."
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="performer-website">Website URL</Label>
+                  <Input
+                    id="performer-website"
+                    name="websiteUrl"
+                    type="url"
+                    placeholder="https://..."
+                  />
+                </div>
               </div>
             </div>
-          </div>
 
           <div className="flex items-center gap-3 pt-4 border-t border-border">
             <Button type="submit">Create Performer</Button>
