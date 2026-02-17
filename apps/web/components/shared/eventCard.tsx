@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { Clock, Ticket } from 'lucide-react';
 import { Badge } from "@/components/ui/badge";
@@ -38,14 +39,15 @@ export default function EventCard({ event, variant = 'robroy' }: EventCardProps)
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             whileHover={{ y: -5 }}
-            className={`rounded-2xl overflow-hidden shadow-xl ${styles.eventCard.container}`}
+            className={`rounded-2xl overflow-hidden shadow-xl max-w-96 ${styles.eventCard.container}`}
         >
             {/* Image */}
-            <div className="relative h-48 overflow-hidden">
-                <img
+            <div className="relative h-72  overflow-hidden">
+                <Image
                     src={event.image}
                     alt={event.title}
-                    className="w-full h-full object-cover"
+                    fill
+                    className="object-cover object-top"
                 />
                 <div className={`absolute inset-0 ${styles.eventCard.imageOverlay}`} />
 

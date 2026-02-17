@@ -189,10 +189,22 @@ export default function KonfusionContent({
 
                 {hasEvents ? (
                     <Tabs defaultValue="upcoming" className="w-full">
-                        <TabsList className="grid w-full max-w-md mx-auto grid-cols-2 mb-12 bg-black/50 border border-purple-500/25">
-                            <TabsTrigger value="upcoming" className="text-lg data-[state=active]:bg-purple-600">Upcoming</TabsTrigger>
-                            <TabsTrigger value="past" className="text-lg data-[state=active]:bg-purple-600">Past Events</TabsTrigger>
-                        </TabsList>
+                        <div className="flex justify-center gap-3 mb-12">
+                            <TabsList className="flex h-auto w-auto gap-3 bg-transparent p-0 border-0">
+                                <TabsTrigger
+                                    value="upcoming"
+                                    className="flex items-center gap-2 px-6 py-3 rounded-full text-sm font-semibold transition-all duration-300 border-0 shadow-none data-[state=active]:bg-purple-600 data-[state=active]:text-white data-[state=active]:shadow-lg data-[state=active]:shadow-purple-600/30 data-[state=inactive]:bg-black/60 data-[state=inactive]:text-purple-300/80 data-[state=inactive]:hover:text-white data-[state=inactive]:hover:bg-black/80"
+                                >
+                                    Upcoming Events
+                                </TabsTrigger>
+                                <TabsTrigger
+                                    value="past"
+                                    className="flex items-center gap-2 px-6 py-3 rounded-full text-sm font-semibold transition-all duration-300 border-0 shadow-none data-[state=active]:bg-purple-600 data-[state=active]:text-white data-[state=active]:shadow-lg data-[state=active]:shadow-purple-600/30 data-[state=inactive]:bg-black/60 data-[state=inactive]:text-purple-300/80 data-[state=inactive]:hover:text-white data-[state=inactive]:hover:bg-black/80"
+                                >
+                                    Past Events
+                                </TabsTrigger>
+                            </TabsList>
+                        </div>
 
                         <TabsContent value="upcoming">
                             {upcomingEvents.length > 0 ? (
@@ -212,7 +224,7 @@ export default function KonfusionContent({
 
                         <TabsContent value="past">
                             {pastEvents.length > 0 ? (
-                                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                                <div className="grid grid-cols-[repeat(auto-fit,minmax(280px,380px))] justify-center gap-8">
                                     {pastEvents.map((event) => (
                                         <EventCard key={event.id} event={event} variant="konfusion" />
                                     ))}
@@ -290,7 +302,7 @@ export default function KonfusionContent({
                     </motion.div>
 
                     {hasPerformers ? (
-                        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <div className="grid grid-cols-[repeat(auto-fit,minmax(280px,380px))] justify-center gap-8">
                             {performers.map((dj) => (
                                 <PerformerCard key={dj.name} performer={dj} variant="konfusion" />
                             ))}

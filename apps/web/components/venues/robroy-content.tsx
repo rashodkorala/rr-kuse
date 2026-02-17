@@ -1,8 +1,8 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Beer, Music, Calendar, Clock, MapPin, Phone, Mail, Instagram, Facebook } from 'lucide-react';
+import { Beer, Headphones, Music, Calendar, Clock, MapPin, Phone, Mail, Instagram, Facebook } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import VenueNav from '@/components/shared/venueNav';
@@ -49,8 +49,13 @@ export default function RobRoyContent({
     gallery,
     instagramPosts,
 }: RobRoyContentProps) {
+    const [performerFilter, setPerformerFilter] = useState<'all' | 'band' | 'dj'>('all');
     const hasEvents = upcomingEvents.length > 0 || pastEvents.length > 0;
     const hasPerformers = performers.length > 0;
+
+    const filteredPerformers = performerFilter === 'all'
+        ? performers
+        : performers.filter((p) => p.type === performerFilter);
     const hasDeals = deals.length > 0;
     const hasGallery = gallery.length > 0;
     const hasInstagram = instagramPosts.length > 0;
@@ -129,7 +134,7 @@ export default function RobRoyContent({
             )}
 
             {/* Events Section */}
-            <section id="events" className="scroll-mt-24 py-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto bg-zinc-950">
+            <section id="events" className="py-24 bg-linear-to-b from-black to-zinc-950">
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
@@ -144,14 +149,26 @@ export default function RobRoyContent({
 
                 {hasEvents ? (
                     <Tabs defaultValue="upcoming" className="w-full">
-                        <TabsList className="grid w-full max-w-md mx-auto grid-cols-2 mb-12 bg-black/50 border border-white/10">
-                            <TabsTrigger value="upcoming" className="text-lg data-[state=active]:bg-orange-600">Upcoming Events</TabsTrigger>
-                            <TabsTrigger value="past" className="text-lg data-[state=active]:bg-orange-600">Past Events</TabsTrigger>
-                        </TabsList>
+                        <div className="flex justify-center gap-3 mb-12">
+                            <TabsList className="flex h-auto w-auto gap-3 bg-transparent p-0 border-0">
+                                <TabsTrigger
+                                    value="upcoming"
+                                    className="flex items-center gap-2 px-6 py-3 rounded-full text-sm font-semibold transition-all duration-300 border-0 shadow-none data-[state=active]:bg-orange-600 data-[state=active]:text-white data-[state=active]:shadow-lg data-[state=active]:shadow-orange-600/30 data-[state=inactive]:bg-zinc-900/80 data-[state=inactive]:text-gray-400 data-[state=inactive]:hover:text-white data-[state=inactive]:hover:bg-zinc-800/80"
+                                >
+                                    Upcoming Events
+                                </TabsTrigger>
+                                <TabsTrigger
+                                    value="past"
+                                    className="flex items-center gap-2 px-6 py-3 rounded-full text-sm font-semibold transition-all duration-300 border-0 shadow-none data-[state=active]:bg-orange-600 data-[state=active]:text-white data-[state=active]:shadow-lg data-[state=active]:shadow-orange-600/30 data-[state=inactive]:bg-zinc-900/80 data-[state=inactive]:text-gray-400 data-[state=inactive]:hover:text-white data-[state=inactive]:hover:bg-zinc-800/80"
+                                >
+                                    Past Events
+                                </TabsTrigger>
+                            </TabsList>
+                        </div>
 
                         <TabsContent value="upcoming">
                             {upcomingEvents.length > 0 ? (
-                                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                                <div className="grid grid-cols-[repeat(auto-fit,minmax(280px,380px))] justify-center gap-8">
                                     {upcomingEvents.map((event) => (
                                         <EventCard key={event.id} event={event} variant="robroy" />
                                     ))}
@@ -167,7 +184,7 @@ export default function RobRoyContent({
 
                         <TabsContent value="past">
                             {pastEvents.length > 0 ? (
-                                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                                <div className="grid grid-cols-[repeat(auto-fit,minmax(280px,380px))] justify-center gap-8">
                                     {pastEvents.map((event) => (
                                         <EventCard key={event.id} event={event} variant="robroy" />
                                     ))}
@@ -229,7 +246,7 @@ export default function RobRoyContent({
                 </section>
             )}
 
-            {/* Bands Section */}
+            {/* Live Bands & DJs Section */}
             <section id="performers" className="scroll-mt-24 py-24 bg-zinc-950">
                 <div className="px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
                     <motion.div
@@ -238,18 +255,51 @@ export default function RobRoyContent({
                         viewport={{ once: true }}
                         className="text-center mb-16"
                     >
-                        <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">Live Bands</h2>
+                        <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">Live Bands & DJs</h2>
                         <p className="text-xl text-gray-400 max-w-2xl mx-auto">
                             The best local talent gracing our stage every week
                         </p>
                     </motion.div>
 
                     {hasPerformers ? (
-                        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                            {performers.map((band) => (
-                                <PerformerCard key={band.name} performer={band} variant="robroy" />
-                            ))}
-                        </div>
+                        <>
+                            <div className="flex justify-center gap-3 mb-12">
+                                <button
+                                    onClick={() => setPerformerFilter('all')}
+                                    className={`flex items-center gap-2 px-6 py-3 rounded-full text-sm font-semibold transition-all duration-300 ${
+                                        performerFilter === 'all' ? 'bg-orange-600 text-white shadow-lg shadow-orange-600/30' : 'bg-zinc-900/80 text-gray-400 hover:text-white hover:bg-zinc-800/80'
+                                    }`}
+                                >
+                                    All
+                                </button>
+                                <button
+                                    onClick={() => setPerformerFilter('band')}
+                                    className={`flex items-center gap-2 px-6 py-3 rounded-full text-sm font-semibold transition-all duration-300 ${
+                                        performerFilter === 'band' ? 'bg-orange-600 text-white shadow-lg shadow-orange-600/30' : 'bg-zinc-900/80 text-gray-400 hover:text-white hover:bg-zinc-800/80'
+                                    }`}
+                                >
+                                    <Music className="w-4 h-4" />
+                                    Bands
+                                </button>
+                                <button
+                                    onClick={() => setPerformerFilter('dj')}
+                                    className={`flex items-center gap-2 px-6 py-3 rounded-full text-sm font-semibold transition-all duration-300 ${
+                                        performerFilter === 'dj' ? 'bg-orange-600 text-white shadow-lg shadow-orange-600/30' : 'bg-zinc-900/80 text-gray-400 hover:text-white hover:bg-zinc-800/80'
+                                    }`}
+                                >
+                                    <Headphones className="w-4 h-4" />
+                                    DJs
+                                </button>
+                            </div>
+                            <div className="grid grid-cols-[repeat(auto-fit,minmax(280px,380px))] justify-center gap-8">
+                                {filteredPerformers.map((performer) => (
+                                    <PerformerCard key={performer.name} performer={performer} variant="robroy" />
+                                ))}
+                            </div>
+                            {filteredPerformers.length === 0 && (
+                                <p className="text-center text-gray-400 py-8">No {performerFilter === 'band' ? 'bands' : 'DJs'} in this lineup.</p>
+                            )}
+                        </>
                     ) : (
                         <EmptyState
                             title="No performers listed yet"
