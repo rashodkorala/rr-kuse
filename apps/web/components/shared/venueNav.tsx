@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
+import Image from 'next/image';
 import Link from 'next/link';
 import { createPageUrl } from '../../utils';
 import { Menu, ArrowLeft, Beer, Sparkles } from 'lucide-react';
@@ -67,12 +68,12 @@ export default function VenueNav({ variant = 'robroy', activeSection = 'home' }:
                         <ArrowLeft className="w-5 h-5" />
                         {isRobRoy ? (
                             <div className="flex items-center gap-2">
-                                <Beer className="w-6 h-6" />
+                                <Image src="/rob-roy-logo.png" alt="Rob Roy" width={36} height={36} className="h-9 w-auto" />
                                 <span className="font-bold text-xl">ROB ROY</span>
                             </div>
                         ) : (
                             <div className="flex items-center gap-2">
-                                <Sparkles className="w-6 h-6" />
+                                <Image src="/konfusion-logo.png" alt="Konfusion" width={36} height={36} className="h-9 w-auto" />
                                 <span className="font-bold text-xl">KONFUSION</span>
                             </div>
                         )}

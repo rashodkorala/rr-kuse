@@ -2,9 +2,10 @@
 
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
+import Image from 'next/image';
 import Link from 'next/link';
 import { createPageUrl } from '../utils';
-import { Beer, ArrowRight, Sparkles } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 
 export default function Home() {
   const [hoveredSide, setHoveredSide] = useState<'robroy' | 'konfusion' | null>(null);
@@ -27,7 +28,7 @@ export default function Home() {
           <div
             className="absolute inset-0 bg-cover bg-center"
             style={{
-              backgroundImage: 'url(https://images.unsplash.com/photo-1514933651103-005eec06c04b?w=1200)',
+              backgroundImage: 'url(/_MG_9879.jpg)',
             }}
           />
           {/* Overlay */}
@@ -48,8 +49,9 @@ export default function Home() {
               <motion.div
                 animate={{ scale: hoveredSide === 'robroy' ? 1.1 : 1 }}
                 transition={{ duration: 0.6, ease: [0.25, 0.1, 0.25, 1] }}
+                className="mb-6"
               >
-                <Beer className="w-16 h-16 mx-auto mb-6 opacity-90" />
+                <Image src="/rob-roy-logo.png" alt="Rob Roy" width={120} height={120} className="h-24 w-auto mx-auto" />
               </motion.div>
 
               <h1 className="font-bold text-5xl md:text-7xl tracking-tight mb-4">
@@ -131,8 +133,9 @@ export default function Home() {
                   rotate: hoveredSide === 'konfusion' ? [0, -10, 10, 0] : 0
                 }}
                 transition={{ duration: 0.6, ease: [0.25, 0.1, 0.25, 1] }}
+                className="mb-6"
               >
-                <Sparkles className="w-16 h-16 mx-auto mb-6 opacity-90" />
+                <Image src="/konfusion-logo.png" alt="Konfusion" width={120} height={120} className="h-24 w-auto mx-auto" />
               </motion.div>
 
               <h1 className="font-bold text-5xl md:text-7xl tracking-tight mb-4">
@@ -187,7 +190,7 @@ export default function Home() {
           />
           <div className="absolute inset-0 bg-linear-to-br from-black/90 via-orange-900/85 to-black/95" />
           <div className="relative h-full flex flex-col justify-center items-center text-white p-6">
-            <Beer className="w-12 h-12 mb-4" />
+            <Image src="/rob-roy-logo.png" alt="Rob Roy" width={64} height={64} className="h-12 w-auto mb-4" />
             <h2 className="font-bold text-4xl mb-2">ROB ROY</h2>
             <p className="text-sm tracking-widest opacity-80 mb-1">WE INSTALL & SERVICE HANGOVERS</p>
             <p className="text-xs tracking-widest opacity-60">EST. 1977</p>
@@ -210,7 +213,7 @@ export default function Home() {
           />
           <div className="absolute inset-0 bg-linear-to-bl from-black/90 via-black/80 to-black/95" />
           <div className="relative h-full flex flex-col justify-center items-center text-white p-6">
-            <Sparkles className="w-12 h-12 mb-4" />
+            <Image src="/konfusion-logo.png" alt="Konfusion" width={64} height={64} className="h-12 w-auto mb-4" />
             <h2 className="font-bold text-4xl mb-2">KONFUSION</h2>
             <p className="text-sm tracking-wide opacity-80 italic">(n.) a lack of order</p>
             <div className="mt-4 flex items-center gap-2">

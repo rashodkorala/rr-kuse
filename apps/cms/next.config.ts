@@ -4,8 +4,9 @@ const nextConfig: NextConfig = {
   transpilePackages: ["@rr-kuse/ui"],
   experimental: {
     serverActions: {
-      bodySizeLimit: "10mb",
+      bodySizeLimit: "15mb",
     },
+    proxyClientMaxBodySize: "15mb",
   },
 };
 

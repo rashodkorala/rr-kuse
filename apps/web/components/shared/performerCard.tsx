@@ -104,12 +104,14 @@ export default function PerformerCard({ performer, variant = 'robroy' }: Perform
         >
             {/* Image section */}
             <div className="relative aspect-square overflow-hidden">
+                {performer.image && (
                 <Image
                     src={performer.image}
                     alt={performer.name}
                     fill
                     className="object-cover transition-transform duration-700 group-hover:scale-105"
                 />
+                )}
                 <div className={`absolute inset-0 ${cardStyles.imageOverlay}`} />
 
                 {/* Type badge - top left */}
@@ -158,7 +160,9 @@ export default function PerformerCard({ performer, variant = 'robroy' }: Perform
                                 <DialogHeader>
                                     <div className="flex gap-4">
                                         <div className="relative h-24 w-24 shrink-0 overflow-hidden rounded-lg">
+                                            {performer.image && (
                                             <Image src={performer.image} alt={performer.name} fill className="object-cover" />
+                                            )}
                                         </div>
                                         <div className="min-w-0">
                                             <DialogTitle className="text-lg">{performer.name}</DialogTitle>

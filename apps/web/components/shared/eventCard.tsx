@@ -43,12 +43,14 @@ export default function EventCard({ event, variant = 'robroy' }: EventCardProps)
         >
             {/* Image */}
             <div className="relative h-72  overflow-hidden">
+                {event.image && (
                 <Image
                     src={event.image}
                     alt={event.title}
                     fill
                     className="object-cover object-top"
                 />
+                )}
                 <div className={`absolute inset-0 ${styles.eventCard.imageOverlay}`} />
 
                 {/* Date Badge */}

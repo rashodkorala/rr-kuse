@@ -70,7 +70,13 @@ async function resolveImageUrl(
   required = false,
 ) {
   const file = getImageFile(formData, fileKey);
-  if (file) return uploadImageFile(file, folder);
+  if (file) {
+    try {
+      return await uploadImageFile(file, folder);
+    } catch (err) {
+      safeRedirect("error", err instanceof Error ? err.message : "Image upload failed.");
+    }
+  }
 
   const url = getOptionalText(formData, urlKey);
   if (required && !url) {

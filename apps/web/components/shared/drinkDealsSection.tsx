@@ -93,12 +93,14 @@ export default function DrinkDealsSection({ deals, variant }: DrinkDealsSectionP
                         >
                             {/* Photo */}
                             <div className="relative aspect-4/3 overflow-hidden">
+                                {deal.image && (
                                 <Image
                                     src={deal.image}
                                     alt={deal.title}
                                     fill
                                     className="object-cover transition-transform duration-500 group-hover:scale-105"
                                 />
+                                )}
                                 <div className={`absolute inset-0 ${styles.dealCard.imageOverlay}`} />
 
                                 {/* Day badge on photo */}
