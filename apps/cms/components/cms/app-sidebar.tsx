@@ -4,12 +4,17 @@ import * as React from "react";
 import {
   BarChart3,
   Calendar,
+  CalendarDays,
+  Clock,
   FolderOpen,
   Gauge,
   Image,
   Instagram,
   FileText,
+  PenSquare,
   Settings,
+  Share2,
+  Sparkles,
   Users,
   Wine,
   Video,
@@ -23,6 +28,9 @@ import {
   Sidebar,
   SidebarContent,
   SidebarFooter,
+  SidebarGroup,
+  SidebarGroupContent,
+  SidebarGroupLabel,
   SidebarHeader,
   SidebarMenu,
   SidebarMenuButton,
@@ -41,6 +49,14 @@ const data = {
     { title: "Content", url: "/content", icon: FolderOpen },
     { title: "Instagram", url: "/instagram", icon: Instagram },
     { title: "Analytics", url: "/analytics", icon: BarChart3 },
+  ],
+  navSocial: [
+    { title: "Social Dashboard", url: "/social/dashboard", icon: BarChart3 },
+    { title: "Compose", url: "/social/compose", icon: PenSquare },
+    { title: "Calendar", url: "/social/calendar", icon: CalendarDays },
+    { title: "Platforms", url: "/social/platforms", icon: Share2 },
+    { title: "Post History", url: "/social/history", icon: Clock },
+    { title: "AI Suggestions", url: "/social/ai-suggestions", icon: Sparkles },
   ],
   navSecondary: [
     { title: "Documentation", url: "/docs", icon: BookOpen },
@@ -66,6 +82,23 @@ export function AppSidebar({
       </SidebarHeader>
       <SidebarContent>
         <NavMain items={data.navMain} />
+        <SidebarGroup>
+          <SidebarGroupLabel>Social</SidebarGroupLabel>
+          <SidebarGroupContent>
+            <SidebarMenu>
+              {data.navSocial.map((item) => (
+                <SidebarMenuItem key={item.title}>
+                  <SidebarMenuButton asChild tooltip={item.title}>
+                    <a href={item.url}>
+                      <item.icon />
+                      <span>{item.title}</span>
+                    </a>
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
+              ))}
+            </SidebarMenu>
+          </SidebarGroupContent>
+        </SidebarGroup>
         <NavSecondary items={data.navSecondary} className="mt-auto" />
       </SidebarContent>
       <SidebarFooter>

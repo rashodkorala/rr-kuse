@@ -16,6 +16,13 @@ const titleMap: Record<string, string> = {
   "/instagram": "Instagram",
   "/analytics": "Analytics",
   "/settings": "Settings",
+  "/social": "Social",
+  "/social/dashboard": "Social Dashboard",
+  "/social/compose": "Compose Post",
+  "/social/calendar": "Content Calendar",
+  "/social/platforms": "Connected Platforms",
+  "/social/history": "Post History",
+  "/social/ai-suggestions": "AI Suggestions",
 };
 
 function getPageTitle(pathname: string): string {
